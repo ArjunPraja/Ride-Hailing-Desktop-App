@@ -9,7 +9,7 @@ class DatabaseConfig:
         self._db = None
 
         self.MONGODB_URI = os.getenv('MONODB_URI', 'mongodb://localhost:27017/')
-        self.DATABASE_NAME = os.getenv('DATABASE_NAME', 'mydb')
+        self.DATABASE_NAME = os.getenv('DATABASE_NAME', 'ibm-ride-app')
         self.CONNECT_TIMEOUT = int(os.getenv('CONNECT_TIMEOUT', 5000)) 
         self.SERVER_SELECTION_TIMEOUT = int(os.getenv('SERVER_SELECTION_TIMEOUT', 5000))
 
@@ -18,7 +18,7 @@ class DatabaseConfig:
             self._client = MongoClient(
                 self.MONGODB_URI,
                 connectTimeoutMS = self.CONNECT_TIMEOUT,
-                severSelectionTimeoutMS = self.SERVER_SELECTION_TIMEOUT
+                serverSelectionTimeoutMS = self.SERVER_SELECTION_TIMEOUT
             )
             self._db = self._client[self.DATABASE_NAME]
             print(f"Connected to database: {self.DATABASE_NAME}")
