@@ -1,5 +1,5 @@
 from bson import ObjectId
-from datetime import datetime
+from datetime import datetime, timezone
 from config.database import db_config
 
 class BaseModel:
@@ -8,7 +8,7 @@ class BaseModel:
 
     def __init__(self, **data):
         self._id = data.get('_id', ObjectId())
-        self.created_at = data.get('created_at', datetime.now(datetime.timezone.utc))
+        self.created_at = data.get('created_at', datetime.now(timezone.utc))
         self.updated_at = data.get('updated_at', None)
         
         for key, value in data.items():
@@ -26,7 +26,7 @@ class BaseModel:
     def save(self):
 
         self.validate()
-        self.updated_at = datetime.now(datetime.timezone.utc)
+        self.updated_at = datetime.now(timezone.utc)
 
         collection = db_config.get_collection(self.collection_name)
         data = self.to_dict()

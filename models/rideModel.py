@@ -1,18 +1,18 @@
 from models.baseModel import BaseModel
-from datetime import datetime
+from datetime import datetime, timezone
 
 class RideModel(BaseModel):
 
     collection_name = "rides"
 
     def __init__(self, rider_id, pickup_location, drop_location, fare, status, **data):
+        super().__init__(**data)
         self.rider_id = rider_id
         self.pickup_location = pickup_location
         self.drop_location = drop_location
         self.fare = fare
         self.status = status
-        self.ride_date = datetime.now(datetime.timezone.utc)
-        super().__init__(**data)
+        self.ride_date = datetime.now(timezone.utc)
 
     def validate(self):
         errors = []

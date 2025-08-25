@@ -6,12 +6,12 @@ class UserModel(BaseModel):
     collection_name = 'users'
 
     def __init__(self, name, email, phone_no, role, password, **data):
+        super().__init__(**data)
         self.name = name
         self.email = email
         self.phone_no = phone_no
         self.role = role
         self.password = password 
-        super().__init__(**data)
 
     def validate(self):
         errors = []

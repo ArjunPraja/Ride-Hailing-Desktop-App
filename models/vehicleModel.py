@@ -7,13 +7,13 @@ class VehicleModel(BaseModel):
     collection_name =  'vehciles'
 
     def __init__(self, driver_id, brand, model, year, registration_no, color, **data):
+        super().__init__(**data)
         self.driver_id = driver_id
         self.brand = brand
         self.model = model
         self.year = year
         self.registration_no = registration_no
         self.color = color
-        super().__init__(**data)
 
     def validate(self):
         errors = []
