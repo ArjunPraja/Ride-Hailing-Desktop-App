@@ -19,10 +19,10 @@ class RideModel(BaseModel):
 
         # rider_id validation: must be a valid ObjectId string
         from bson import ObjectId
-        try:
-            ObjectId(str(self.rider_id))
-        except Exception:
-            errors.append("Invalid rider_id.")
+        # try:
+        #     ObjectId(str(self.rider_id))
+        # except Exception:
+        #     errors.append("Invalid rider_id.")
 
         # pickup_location and drop_location: should not be empty
         if not self.pickup_location or not self.pickup_location.strip():

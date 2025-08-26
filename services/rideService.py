@@ -18,7 +18,7 @@ class RideService:
             if not all([rider_id, pickup_location, drop_location, fare, status]):
                 raise ValueError("Missing required ride data fields.")
             
-            new_ride = RideModel(rider_id = rider_id, pickup_location=pickup_location, drop_location = drop_location, fare = fare, status = status, **ride_data)
+            new_ride = RideModel(**ride_data)
             return new_ride.save() # return the ride _id
         except Exception as e:
             raise e
