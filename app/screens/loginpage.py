@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from config.config_var import Config
+import config.config_var as config
 from services.userService import UserService
 
 class LoginPage(ctk.CTkFrame):
@@ -40,13 +40,13 @@ class LoginPage(ctk.CTkFrame):
             user = user_service.authenticate_user(email, password)
             if user:
 
-                Config.loggedInUser = user
+                config.loggedInUser = user
                 self.status_label.configure(text="Login Successful!", text_color="green")
-                print(Config.loggedInUser)
+                # print(config.loggedInUser)
                 if self.manager: 
-                    if Config.loggedInUser['role'] == 'rider':
-                        self.manager.show_screen("ride_request")
-                    elif Config.loggedInUser['role'] == 'driver':
+                    if config.loggedInUser['role'] == 'rider':
+                        self.manager.show_screen("rider_dashboard")
+                    elif config.loggedInUser['role'] == 'driver':
                         self.manager.show_screen("driver_dashboard")
                     # elif Config.loggedInUser['role'] == 'admin':
                     #     self.manager.show_screen("rider_dashboard")

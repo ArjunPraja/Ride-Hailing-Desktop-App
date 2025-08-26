@@ -36,9 +36,9 @@ class UserModel(BaseModel):
             errors.append(f"Role must be one of ['rider', 'driver'].")
 
         # Password validation (min 8 chars, at least 1 number + 1 special char)
-        pwd_regex = r'^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$'
-        if not re.match(pwd_regex, self.password):
-            errors.append("Password must be at least 8 characters long, include a number and a special character.")
+        # pwd_regex = r'^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$'
+        # if not re.match(pwd_regex, self.password):
+        #     errors.append("Password must be at least 8 characters long, include a number and a special character.")
 
         if errors:
             raise ValueError({"validation_errors": errors})

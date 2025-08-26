@@ -12,6 +12,7 @@ from app.screens.driver.vehicleform import VehicleForm
 from app.screens.driver.driverdashboard import DriverDashboard
 from app.screens.driver.viewvehicles import ViewVehicle
 from app.screens.rider.ride_Request import RideRequestPage
+from app.screens.rider.riderdashboard import RiderDashboard
 
 def main():
     ctk.set_appearance_mode("System")
@@ -26,6 +27,7 @@ def main():
     manager.add_screen("landing", LandingPage)
     manager.add_screen("login", LoginPage)
     manager.add_screen("signup", RegisterPage)
+    manager.add_screen("rider_dashboard", RiderDashboard)
     manager.add_screen("driver_dashboard", DriverDashboard)
     manager.add_screen("vehicle_form", VehicleForm)
     manager.add_screen("view_vehicles", ViewVehicle)

@@ -1,5 +1,6 @@
 import customtkinter as ctk
-from config.config_var import Config
+import config.config_var as config
+from services.vehicleService import VehicleService
 
 class VehicleForm(ctk.CTkFrame):
     def __init__(self, parent, manager=None):
@@ -50,14 +51,26 @@ class VehicleForm(ctk.CTkFrame):
     def handle_register(self):
         # Collect data from entries
         vehicle_data = {
-            "driver_id" : Config.loggedInUser.get('_id'), 
+            "driver_id" : config.loggedInUser['_id'],
             "brand": self.brand_entry.get(),
             "model": self.model_entry.get(),
-            "year": self.year_entry.get(),
+            "year": int(self.year_entry.get()),
             "registration_no": self.registration_no_entry.get(),
             "color": self.color_entry.get()
         }
 
-        # For now, just print it
-        print("Vehicle registered:", vehicle_data)
-        self.status_label.configure(text="Vehicle registered successfully!")
+        try:
+            
+            vehicle_service = VehicleService()
+            vehicle_id = vehicle_service.insert_vehicle(vehicle_data)
+
+            print(config.loggedInUser)
+            if vehicle_id :
+                self.status_label.configure(
+                    text=f"Vehicle Crated for {config.loggedInUser['_id']}. ID: {vehicle_id}", text_color="green"
+                )
+            self.manager.show_screen('view_vehicles')
+
+        except Exception as e:
+            print(e)
+            self.status_label.configure(text=f"❌ {str(e)}", text_color="red")
