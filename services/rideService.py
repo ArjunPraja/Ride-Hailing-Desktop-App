@@ -1,11 +1,30 @@
 from models.rideModel import RideModel
+from bson import ObjectId
 class RideService:
 
-    def list_rides(self):
-        pass
+    def list_rides(self, role, user_id):
+        """List all rides for a given user (rider or driver)."""
+        pipeline = []
+        if role == "rider":
+            pipeline = [{"$match": {"rider_id": user_id}}]
+        elif role == "driver":
+            pipeline = [{"$match": {"driver_id": user_id}}]
 
-    def get_ride(self, ride_id):
-        pass
+        return RideModel.list_all_data(pipeline)
+
+    def get_ride(self, ride_id, user_role=None, user_id=None):
+        """Fetch a single ride by ID with optional role-based filtering."""
+        try:
+            query = {"_id": ObjectId(ride_id)}
+            if user_role == "rider":
+                query["rider_id"] = user_id
+            elif user_role == "driver":
+                query["driver_id"] = user_id
+
+            ride_obj = RideModel.find_one(query)
+            return ride_obj.to_dict() if ride_obj else None
+        except Exception as e:
+            raise e
 
     def insert_ride(self, ride_data):
         try:
@@ -24,7 +43,10 @@ class RideService:
             raise e
 
     def update_ride(self, ride_id, ride_data):
-        pass
+        try:
+            return RideModel.update({"_id": ObjectId(ride_id)}, ride_data)
+        except Exception as e:
+            raise e
 
     def delete_ride(self, ride_id):
         pass

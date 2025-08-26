@@ -1,15 +1,14 @@
 import customtkinter as ctk
 from tkinter import messagebox
 import config.config_var as Config
-from bson import ObjectId
 from bson.errors import InvalidId
-from models.rideModel import RideModel
-
+from services.rideService import RideService
 
 class ViewRideByIdPage(ctk.CTkFrame):
     def __init__(self, root, manager):
         super().__init__(root)
         self.manager = manager
+        self.ride_service = RideService()
 
         # Title
         ctk.CTkLabel(self, text="Ride Details", font=("Arial", 18, "bold")).pack(pady=15)
@@ -38,14 +37,11 @@ class ViewRideByIdPage(ctk.CTkFrame):
             return
 
         try:
-            query = {"_id": ObjectId(ride_id)}
-            if Config.loggedInUser["role"] == "rider":
-                query["rider_id"] = Config.loggedInUser["_id"]
-            elif Config.loggedInUser["role"] == "driver":
-                query["driver_id"] = Config.loggedInUser["_id"]
-
-            ride_obj = RideModel.find_one(query)
-            ride = ride_obj.to_dict() if ride_obj else None
+            ride = self.ride_service.get_ride(
+                ride_id,
+                Config.loggedInUser["role"],
+                Config.loggedInUser["_id"]
+            )
 
         except InvalidId:
             messagebox.showerror("Invalid ID", "Please enter a valid Ride ID format.")

@@ -1,14 +1,13 @@
 import customtkinter as ctk
 from tkinter import messagebox
-from config.database import DatabaseConfig
 import config.config_var as Config
-from models.rideModel import RideModel
-from bson import ObjectId
+from services.rideService import RideService
 
 class ViewMyRidesPage(ctk.CTkFrame):
     def __init__(self, root, manager):
         super().__init__(root)
         self.manager = manager
+        self.ride_service = RideService()
 
         # Title
         ctk.CTkLabel(self, text="My Rides", font=("Arial", 18, "bold")).pack(pady=15)
@@ -25,8 +24,7 @@ class ViewMyRidesPage(ctk.CTkFrame):
 
     def cancel_ride(self, ride_id):
         try:
-            from models.rideModel import RideModel
-            success = RideModel.update({"_id": ride_id}, {"status": "cancelled"})
+            success = self.ride_service.update_ride(ride_id, {"status": "cancelled"})
             if success:
                 messagebox.showinfo("Success", f"Ride {ride_id} cancelled.")
                 self.fetch_my_rides()  # Refresh the list
@@ -46,15 +44,8 @@ class ViewMyRidesPage(ctk.CTkFrame):
         user_id = Config.loggedInUser["_id"]
         role = Config.loggedInUser.get("role", "")
 
-        
-       
-        pipeline = []
-        if role == "rider":
-            pipeline = [{"$match": {"rider_id": user_id}}]
-        elif role == "driver":
-            pipeline = [{"$match": {"driver_id": user_id}}]
         try:
-             rides = RideModel.list_all_data(pipeline)
+             rides = self.ride_service.list_rides(role, user_id)
                     
         except Exception as e:
             messagebox.showerror("Error", f"Error fetching rides: {e}")
