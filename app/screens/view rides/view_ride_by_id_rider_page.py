@@ -21,7 +21,7 @@ class ViewRideByIdPage(ctk.CTkFrame):
         # Button
         ctk.CTkButton(self, text="Fetch Ride", command=self.fetch_ride).pack(pady=10)
 
-        # Scrollable Frame for ride details
+        # Scroll Frame
         self.details_frame = ctk.CTkScrollableFrame(self, corner_radius=12, width=380, height=250)
         self.details_frame.pack(pady=15, padx=10, fill="both", expand=True)
 
@@ -54,11 +54,14 @@ class ViewRideByIdPage(ctk.CTkFrame):
             db = db_config.get_database()
             collection = db["rides"]
 
-            # fetch details only if ride id belongs to this rider
-            ride = collection.find_one({
-                "_id": ObjectId(ride_id),
-                "rider_email": Config.loggedInUser["email"] 
-            })
+            query = {"_id": ObjectId(ride_id)}
+            if Config.loggedInUser["role"] == "rider":
+                query["rider_id"] = str(Config.loggedInUser["_id"])
+            elif Config.loggedInUser["role"] == "driver":
+                query["driver_id"] = str(Config.loggedInUser["_id"])
+
+            ride = collection.find_one(query)
+
         except InvalidId:
             messagebox.showerror("Invalid ID", "Please enter a valid Ride ID format.")
             return
@@ -80,12 +83,12 @@ class ViewRideByIdPage(ctk.CTkFrame):
         self.add_detail("Drop", ride.get("drop_location", "N/A"))
         self.add_detail("Fare", f"₹{ride.get('fare', 0)}")
 
-        # Status color
+        # Status
         status = ride.get("status", "Unknown")
         color = "green" if status.lower() == "completed" else "orange" if status.lower() == "ongoing" else "red"
         self.add_detail("Status", status, text_color=color, bold=True)
 
         self.add_detail("Date", str(ride.get("ride_date", "N/A")))
 
-        # Clear entry after successful fetch
+        # Clear entry
         self.entry.delete(0, "end")
