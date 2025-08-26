@@ -1,3 +1,4 @@
+from config.config_var import Config
 from config.database import db_config
 
 db = db_config.connect()
