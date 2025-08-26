@@ -12,7 +12,16 @@ class ScreenManager(ctk.CTk):
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_columnconfigure(0, weight=1)
 
-    def show_screen(self, name):
+    def show_screen(self, name, **kwargs):
         screen = self.screens.get(name)
         if screen:
+            
+            # if screen supports reloading with data
+            if hasattr(screen, "load_vehicle_data") and "vehicle_data" in kwargs:
+                screen.vehicle_data = kwargs["vehicle_data"]
+                screen.load_vehicle_data(kwargs["vehicle_data"])
+            
+            # if screen supports reloading with data
+            elif hasattr(screen, "load_vehicles"):
+                screen.load_vehicles()
             screen.tkraise()

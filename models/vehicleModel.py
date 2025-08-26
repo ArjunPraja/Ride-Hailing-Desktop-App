@@ -4,7 +4,7 @@ from datetime import datetime
 
 class VehicleModel(BaseModel):
 
-    collection_name =  'vehciles'
+    collection_name =  'vehicles'
 
     def __init__(self, driver_id, brand, model, year, registration_no, color, **data):
         super().__init__(**data)
