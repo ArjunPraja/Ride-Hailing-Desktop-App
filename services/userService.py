@@ -9,12 +9,6 @@ class UserService:
 
     def insert_user(self, user_data):
         try:
-            # name = user_data.get('name')
-            # email = user_data.get('email')
-            # phone_no = user_data.get('phone_no')
-            # role = user_data.get('role')
-            # password = user_data.get('password')
-
             required_fields = ["name", "email", "phone_no", "role", "password"]
             if not all(user_data.get(f) for f in required_fields):
                 raise ValueError("All required fields must be provided")
@@ -33,7 +27,7 @@ class UserService:
 
     def authenticate_user(self, email, password):
         try:
-            user = UserModel.find_one({email: email, password: password})
+            user = UserModel.find_one({"email": email, "password": password})
             if user:
                 return user.to_dict()
             return None

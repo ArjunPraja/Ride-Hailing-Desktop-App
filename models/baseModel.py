@@ -19,8 +19,8 @@ class BaseModel:
 
     def to_dict(self):
         data = self.__dict__.copy()
-        data['_id'] = str(self._id)
-        data['created_at'] = self.created_at.isoformat()
+        # data['_id'] = str(self._id)
+        # data['created_at'] = self.created_at.isoformat()
         return data
     
     def save(self):
@@ -31,7 +31,9 @@ class BaseModel:
         collection = db_config.get_collection(self.collection_name)
         data = self.to_dict()
 
-        collection.replace_one({'_id': self._id}, data, upsert=True)
+        # collection.replace_one({'_id': self._id}, data, upsert=True)
+        result = collection.insert_one(data)
+        
         return str(self._id)
     
     def delete(self):
