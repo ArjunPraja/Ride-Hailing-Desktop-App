@@ -22,7 +22,6 @@ class RideService:
             return new_ride.save() # return the ride _id
         except Exception as e:
             raise e
-        pass
 
     def update_ride(self, ride_id, ride_data):
         pass
