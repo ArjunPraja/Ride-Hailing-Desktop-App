@@ -14,7 +14,6 @@ class UserService:
                 raise ValueError("All required fields must be provided")
             
             new_user = UserModel(**user_data)
-            print("HERe fsdf......", user_data)
             return new_user.save() # returns _id of the new user
         except Exception as e:
             raise e
