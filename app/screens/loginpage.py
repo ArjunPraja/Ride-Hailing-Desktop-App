@@ -55,3 +55,7 @@ class LoginPage(ctk.CTkFrame):
         else:
             self.status_label.configure(text="Invalid credentials", text_color="red")
 
+    def reset_screen(self):
+        self.email_entry.delete(0, "end")
+        self.password_entry.delete(0, "end")
+        self.status_label.configure(text="")

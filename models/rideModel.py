@@ -5,7 +5,7 @@ class RideModel(BaseModel):
 
     collection_name = "rides"
 
-    def __init__(self, rider_id, pickup_location, drop_location, fare, status, **data):
+    def __init__(self, rider_id, pickup_location, drop_location, fare, status,ratings=None, **data):
         super().__init__(**data)
         self.rider_id = rider_id
         self.pickup_location = pickup_location
@@ -13,6 +13,7 @@ class RideModel(BaseModel):
         self.fare = fare
         self.status = status
         self.ride_date = datetime.now(timezone.utc)
+        self.ratings = ratings or []
 
     def validate(self):
         errors = []
@@ -42,6 +43,18 @@ class RideModel(BaseModel):
         # ride_date: ensure it's a datetime object
         if not isinstance(self.ride_date, datetime):
             errors.append("ride_date must be a datetime object.")
+        
+        if not isinstance(self.ratings, list):
+            errors.append("Ratings must be a list.")
+        else:
+            for rating in self.ratings:
+                if not isinstance(rating, dict):
+                    errors.append("Each rating must be an object {given_by, given_to, score, comment}.")
+                else:
+                    if "given_by" not in rating or "given_to" not in rating or "score" not in rating:
+                        errors.append("Rating must contain 'given_by', 'given_to', and 'score'.")
+                    elif not isinstance(rating["score"], int) or not (1 <= rating["score"] <= 5):
+                        errors.append("Rating 'score' must be an integer between 1 and 5.")
 
         # raise error if any validation fails
         if errors:
