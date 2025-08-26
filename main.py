@@ -26,7 +26,6 @@ def main():
     manager.add_screen("ride_request", RideRequestPage) 
 
     manager.show_screen("landing")
-    # manager.show_screen("rider_request")
 
     app.mainloop()
 
