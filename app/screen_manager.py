@@ -15,7 +15,14 @@ class ScreenManager(ctk.CTk):
     def show_screen(self, name, **kwargs):
         screen = self.screens.get(name)
         if screen:
+
+            if hasattr(screen, "fetch_my_rides"):
+                screen.fetch_my_rides()
             
+            if hasattr(screen, "fetch_ride") and "ride_id" in kwargs:
+                screen.fetch_ride(kwargs["ride_id"])
+            
+
             # if screen supports reloading with data
             if hasattr(screen, "load_vehicle_data") and "vehicle_data" in kwargs:
                 screen.vehicle_data = kwargs["vehicle_data"]

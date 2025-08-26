@@ -77,7 +77,8 @@ class RideRequestPage(ctk.CTkFrame):
             }
             ride_id = self.ride_service.insert_ride(ride_data)
             self.status_label.configure(text=f"✅ Ride requested! ID: {ride_id}", text_color="green")
-            self.manager.show_screen("view_ride_by_id")
+            self.manager.show_screen("view_ride_by_id", ride_id=ride_id)
             
+
         except Exception as e:
             self.status_label.configure(text=f"❌ Error: {str(e)}", text_color="red")

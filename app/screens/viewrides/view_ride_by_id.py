@@ -1,7 +1,8 @@
 import customtkinter as ctk
 from tkinter import messagebox
 from config.database import DatabaseConfig
-from config import Config
+import config.config_var as Config
+from config.database import db_config 
 from bson import ObjectId
 from bson.errors import InvalidId
 
@@ -10,6 +11,7 @@ class ViewRideByIdPage(ctk.CTkFrame):
     def __init__(self, root, manager):
         super().__init__(root)
         self.manager = manager
+        self.ride_id=None
 
         # Title
         ctk.CTkLabel(self, text="View Ride by ID", font=("Arial", 18, "bold")).pack(pady=15)
@@ -42,23 +44,27 @@ class ViewRideByIdPage(ctk.CTkFrame):
         ctk.CTkLabel(row, text=f"{label}:", width=80, anchor="w", font=font_style).pack(side="left")
         ctk.CTkLabel(row, text=value, anchor="w", text_color=text_color).pack(side="left")
 
-    def fetch_ride(self):
+    def fetch_ride(self, ride_id=None):
         self.clear_details()
-        ride_id = self.entry.get().strip()
+        if ride_id is None:
+            ride_id = self.entry.get().strip()
+        else:
+            self.entry.delete(0, "end")
+            self.entry.insert(0, ride_id)
 
         if not ride_id:
             messagebox.showwarning("Input Error", "Please enter a Ride ID")
             return
 
         try:
-            db = DatabaseConfig.get_database()
+            db = db_config.get_database()
             collection = db["rides"]
 
             query = {"_id": ObjectId(ride_id)}
             if Config.loggedInUser["role"] == "rider":
-                query["rider_id"] = str(Config.loggedInUser["_id"])
+                query["rider_id"] = Config.loggedInUser["_id"]
             elif Config.loggedInUser["role"] == "driver":
-                query["driver_id"] = str(Config.loggedInUser["_id"])
+                query["driver_id"] = Config.loggedInUser["_id"]
 
             ride = collection.find_one(query)
             print("Querying with:", query)
