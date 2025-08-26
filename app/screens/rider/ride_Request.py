@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from services.rideService import RideService
 import config.config_var as config
-
+import random
 
 class RideRequestPage(ctk.CTkFrame):
     def __init__(self, parent, manager=None):
@@ -72,7 +72,7 @@ class RideRequestPage(ctk.CTkFrame):
                 "rider_id": config.loggedInUser.get("_id"),
                 "pickup_location": pickup,
                 "drop_location": drop,
-                "fare": 100,  # dummy fare for now
+                "fare": random.randint(500, 1000),
                 "status": "requested"
             }
             ride_id = self.ride_service.insert_ride(ride_data)

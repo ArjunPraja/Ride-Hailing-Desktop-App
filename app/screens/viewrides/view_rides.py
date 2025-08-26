@@ -27,11 +27,23 @@ class ViewMyRidesPage(ctk.CTkFrame):
             success = self.ride_service.update_ride(ride_id, {"status": "cancelled"})
             if success:
                 messagebox.showinfo("Success", f"Ride {ride_id} cancelled.")
-                self.fetch_my_rides()  # Refresh the list
+                self.fetch_my_rides() 
             else:
                 messagebox.showerror("Error", f"Could not cancel ride {ride_id}.")
         except Exception as e:
             messagebox.showerror("Error", f"Error cancelling ride: {e}")
+    
+    def complete_ride(self, ride_id):
+        try:
+            success = self.ride_service.update_ride(ride_id, {"status": "completed"})
+            if success:
+                messagebox.showinfo("Success", f"Ride {ride_id} marked as completed.")
+                self.fetch_my_rides()  
+            else:
+                messagebox.showerror("Error", f"Could not complete ride {ride_id}.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Error completing ride: {e}")
+
 
     def fetch_my_rides(self):
         """Fetch all rides for the logged-in user"""
@@ -83,4 +95,13 @@ class ViewMyRidesPage(ctk.CTkFrame):
                     command=lambda ride_id=ride["_id"]: self.cancel_ride(ride_id),
                     fg_color="red",
                     hover_color="darkred"
+                ).pack(pady=5, padx=10, anchor="e")
+            
+            if status.lower() == "ongoing":
+                ctk.CTkButton(
+                   card,
+                   text="Complete Ride",
+                   command=lambda ride_id=ride["_id"]: self.complete_ride(ride_id),
+                   fg_color="green",
+                   hover_color="darkgreen"
                 ).pack(pady=5, padx=10, anchor="e")

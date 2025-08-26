@@ -29,29 +29,20 @@ class RiderDashboard(ctk.CTkFrame):
         self.btn_view_my_rides = ctk.CTkButton(self.content_frame, text="View My Rides", command=self.view_my_rides, width=btn_width, height=btn_height, font=font_btn)
         self.btn_view_my_rides.grid(row=2, column=0, pady=5)
 
-        self.btn_view_ride_by_id = ctk.CTkButton(self.content_frame, text="Complete Ride", command=self.complete_ride, width=btn_width, height=btn_height, font=font_btn)
-        self.btn_view_ride_by_id.grid(row=3, column=0, pady=5)
-
         self.btn_view_ride_by_id = ctk.CTkButton(self.content_frame, text="Logout", command=self.logout, width=btn_width, height=btn_height, font=font_btn)
-        self.btn_view_ride_by_id.grid(row=4, column=0, pady=5)
+        self.btn_view_ride_by_id.grid(row=3, column=0, pady=5)
 
         # Status label for messages
         self.status_label = ctk.CTkLabel(self.content_frame, text="", font=("Arial", 12))
-        self.status_label.grid(row=7, column=0, pady=10)
+        self.status_label.grid(row=4, column=0, pady=10)
 
     # ---------------- Placeholder methods ---------------- #
 
     def ride_request(self):
-        print("1. Request Ride")
         self.manager.show_screen('ride_request')
 
     def view_my_rides(self):
         self.manager.show_screen('view_rides')
-
-    def complete_ride(self):
-        print("4. Complete Ride")
-        self.status_label.configure(text="Completing ride...")
     
     def logout(self):
-        print("6. Logout")
         self.status_label.configure(text="Logging out...")
