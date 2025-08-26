@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from tkinter import messagebox
-from config.database import db_config
+from config.database import DatabaseConfig
 from config import Config
 from bson import ObjectId
 from bson.errors import InvalidId
@@ -51,7 +51,7 @@ class ViewRideByIdPage(ctk.CTkFrame):
             return
 
         try:
-            db = db_config.get_database()
+            db = DatabaseConfig.get_database()
             collection = db["rides"]
 
             query = {"_id": ObjectId(ride_id)}
@@ -61,6 +61,8 @@ class ViewRideByIdPage(ctk.CTkFrame):
                 query["driver_id"] = str(Config.loggedInUser["_id"])
 
             ride = collection.find_one(query)
+            print("Querying with:", query)
+            print("Ride found:", ride)
 
         except InvalidId:
             messagebox.showerror("Invalid ID", "Please enter a valid Ride ID format.")

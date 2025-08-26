@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import messagebox
-from config.database import db_config
-from config import Config
+from config.database import DatabaseConfig
+from config.config_var import Config
 
 
 class ViewMyRidesPage(ctk.CTkFrame):
@@ -29,7 +29,7 @@ class ViewMyRidesPage(ctk.CTkFrame):
         self.clear_rides()
 
         try:
-            db = db_config.get_database()
+            db = DatabaseConfig.get_database()
             collection = db["rides"]
 
             rides = []
@@ -41,6 +41,8 @@ class ViewMyRidesPage(ctk.CTkFrame):
                     rides = list(collection.find({"rider_id": user_id}))
                 elif role == "driver":
                     rides = list(collection.find({"driver_id": user_id}))
+            
+            print("Ride found:", ride)
 
         except Exception as e:
             messagebox.showerror("Error", f"Error fetching rides: {e}")
