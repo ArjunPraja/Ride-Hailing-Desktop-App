@@ -39,7 +39,7 @@ class RideRequestPage(ctk.CTkFrame):
 
         try:
             ride_data = {
-                "rider_id":  Config.loggedInUser.get("id"),   # later replace with actual logged-in user
+                "rider_id": Config.loggedInUser.get("_id"), 
                 "pickup_location": pickup,
                 "drop_location": drop,
                 "fare": 100,  # dummy fare for now

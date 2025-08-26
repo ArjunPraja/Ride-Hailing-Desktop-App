@@ -42,11 +42,11 @@ class LoginPage(ctk.CTkFrame):
 
                 Config.loggedInUser = user
                 self.status_label.configure(text="Login Successful!", text_color="green")
-
+                print(Config.loggedInUser)
                 if self.manager: 
-                    if hasattr(Config.loggedInUser, 'role') and Config.loggedInUser['role'] == 'rider':
+                    if Config.loggedInUser['role'] == 'rider':
                         self.manager.show_screen("ride_request")
-                    elif hasattr(Config.loggedInUser, 'role') and Config.loggedInUser['role'] == 'driver':
+                    elif Config.loggedInUser['role'] == 'driver':
                         self.manager.show_screen("driver_dashboard")
                     # elif Config.loggedInUser['role'] == 'admin':
                     #     self.manager.show_screen("rider_dashboard")
