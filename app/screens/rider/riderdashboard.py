@@ -1,4 +1,6 @@
+from logging import config
 import customtkinter as ctk
+import config.config_var as Config 
 
 class RiderDashboard(ctk.CTkFrame):
     def __init__(self, parent, manager=None):
@@ -45,4 +47,7 @@ class RiderDashboard(ctk.CTkFrame):
         self.manager.show_screen('view_rides')
     
     def logout(self):
+        Config.loggedInUser = None  
         self.status_label.configure(text="Logging out...")
+        self.manager.show_screen("landing")
+        
