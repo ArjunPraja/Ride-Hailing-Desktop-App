@@ -22,3 +22,4 @@ class LandingPage(ctk.CTkFrame):
 
         register_btn = ctk.CTkButton(content_frame, text="Register", command=lambda: manager.show_screen("signup") if manager else None)
         register_btn.grid(row=3, column=0, pady=10)
+        
