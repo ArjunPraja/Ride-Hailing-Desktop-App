@@ -16,7 +16,7 @@ class RideModel(BaseModel):
 
     def validate(self):
         errors = []
-
+        
         # rider_id validation: must be a valid ObjectId string
         from bson import ObjectId
         try:
