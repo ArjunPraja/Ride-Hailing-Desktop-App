@@ -29,17 +29,11 @@ class RiderDashboard(ctk.CTkFrame):
         self.btn_view_my_rides = ctk.CTkButton(self.content_frame, text="View My Rides", command=self.view_my_rides, width=btn_width, height=btn_height, font=font_btn)
         self.btn_view_my_rides.grid(row=2, column=0, pady=5)
 
-        self.btn_view_ride_by_id = ctk.CTkButton(self.content_frame, text="View Ride By ID", command=self.view_ride_by_id, width=btn_width, height=btn_height, font=font_btn)
+        self.btn_view_ride_by_id = ctk.CTkButton(self.content_frame, text="Complete Ride", command=self.complete_ride, width=btn_width, height=btn_height, font=font_btn)
         self.btn_view_ride_by_id.grid(row=3, column=0, pady=5)
 
-        self.btn_view_ride_by_id = ctk.CTkButton(self.content_frame, text="Complete Ride", command=self.complete_ride, width=btn_width, height=btn_height, font=font_btn)
-        self.btn_view_ride_by_id.grid(row=4, column=0, pady=5)
-
-        self.btn_accept_ride = ctk.CTkButton(self.content_frame, text="Cancel Ride", command=self.cancel_ride, width=btn_width, height=btn_height, font=font_btn)
-        self.btn_accept_ride.grid(row=5, column=0, pady=5)
-
         self.btn_view_ride_by_id = ctk.CTkButton(self.content_frame, text="Logout", command=self.logout, width=btn_width, height=btn_height, font=font_btn)
-        self.btn_view_ride_by_id.grid(row=6, column=0, pady=5)
+        self.btn_view_ride_by_id.grid(row=4, column=0, pady=5)
 
         # Status label for messages
         self.status_label = ctk.CTkLabel(self.content_frame, text="", font=("Arial", 12))
@@ -54,16 +48,9 @@ class RiderDashboard(ctk.CTkFrame):
     def view_my_rides(self):
         self.manager.show_screen('view_rides')
 
-    def view_ride_by_id(self):
-       self.manager.show_screen('view_ride_by_id')
-
     def complete_ride(self):
         print("4. Complete Ride")
         self.status_label.configure(text="Completing ride...")
-    
-    def cancel_ride(self):
-        print("5. Cancel Ride")
-        self.status_label.configure(text="Ride cancelled!")
     
     def logout(self):
         print("6. Logout")

@@ -17,13 +17,23 @@ class ViewMyRidesPage(ctk.CTkFrame):
         self.rides_frame = ctk.CTkScrollableFrame(self, corner_radius=12, width=400, height=300)
         self.rides_frame.pack(pady=15, padx=10, fill="both", expand=True)
 
-       
-        
 
     def clear_rides(self):
         """Clear old ride widgets"""
         for widget in self.rides_frame.winfo_children():
             widget.destroy()
+
+    def cancel_ride(self, ride_id):
+        try:
+            from models.rideModel import RideModel
+            success = RideModel.update({"_id": ride_id}, {"status": "cancelled"})
+            if success:
+                messagebox.showinfo("Success", f"Ride {ride_id} cancelled.")
+                self.fetch_my_rides()  # Refresh the list
+            else:
+                messagebox.showerror("Error", f"Could not cancel ride {ride_id}.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Error cancelling ride: {e}")
 
     def fetch_my_rides(self):
         """Fetch all rides for the logged-in user"""
@@ -75,3 +85,11 @@ class ViewMyRidesPage(ctk.CTkFrame):
             ctk.CTkLabel(card, text=f"Status: {status}", text_color=color, anchor="w").pack(anchor="w", padx=10)
             ctk.CTkLabel(card, text=f"Date: {ride.get('ride_date', 'N/A')}", anchor="w").pack(anchor="w", padx=10)
             
+            if status.lower() in ["requested", "accepted", "ongoing"]:
+                ctk.CTkButton(
+                    card,
+                    text="Cancel Ride",
+                    command=lambda ride_id=ride["_id"]: self.cancel_ride(ride_id),
+                    fg_color="red",
+                    hover_color="darkred"
+                ).pack(pady=5, padx=10, anchor="e")
