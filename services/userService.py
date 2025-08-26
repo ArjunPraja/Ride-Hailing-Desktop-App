@@ -9,16 +9,12 @@ class UserService:
 
     def insert_user(self, user_data):
         try:
-            name = user_data.get('name')
-            email = user_data.get('email')
-            phone_no = user_data.get('phone_no')
-            role = user_data.get('role')
-            password = user_data.get('password')
-
-            if not all([name, email, phone_no, role, password]):
-                raise ValueError("All fields (name, email, phone_no, role, password) are required.")
+            required_fields = ["name", "email", "phone_no", "role", "password"]
+            if not all(user_data.get(f) for f in required_fields):
+                raise ValueError("All required fields must be provided")
             
-            new_user = UserModel(name, email, phone_no, role, password, **user_data)
+            new_user = UserModel(**user_data)
+            print("HERe fsdf......", user_data)
             return new_user.save() # returns _id of the new user
         except Exception as e:
             raise e
@@ -28,3 +24,12 @@ class UserService:
 
     def delete_user(self, user_id):
         pass
+
+    def authenticate_user(self, email, password):
+        try:
+            user = UserModel.find_one({"email": email, "password": password})
+            if user:
+                return user.to_dict()
+            return None
+        except Exception as e:
+            raise e

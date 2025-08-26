@@ -45,8 +45,8 @@ class LoginPage(ctk.CTkFrame):
                 
                 if self.manager: 
                     if hasattr(Config.loggedInUser, 'role') and Config.loggedInUser['role'] == 'rider':
-                        self.manager.show_screen("ride_request")
-                    elif hasattr(Config.loggedInUser, 'role') and Config.loggedInUser['role'] == 'driver':
+                        self.manager.show_screen("rider_dashboard")
+                    elif hasattr(Config.loggedInUser, 'role') and Config.loggedInUser['role'] == 'rider':
                         self.manager.show_screen("driver_dashboard")
                     # elif hasattr(Config.loggedInUser, 'role') and Config.loggedInUser['role'] == 'admin':
                     #     self.manager.show_screen("rider_dashboard")
