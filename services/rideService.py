@@ -3,7 +3,6 @@ from bson import ObjectId
 class RideService:
 
     def list_rides(self, role, user_id):
-        """List all rides for a given user (rider or driver)."""
         pipeline = []
         if role == "rider":
             pipeline = [{"$match": {"rider_id": user_id}}]
@@ -13,7 +12,6 @@ class RideService:
         return RideModel.list_all_data(pipeline)
 
     def get_ride(self, ride_id, user_role=None, user_id=None):
-        """Fetch a single ride by ID with optional role-based filtering."""
         try:
             query = {"_id": ObjectId(ride_id)}
             if user_role == "rider":
@@ -38,7 +36,7 @@ class RideService:
                 raise ValueError("Missing required ride data fields.")
             
             new_ride = RideModel(**ride_data)
-            return new_ride.save() # return the ride _id
+            return new_ride.save() # return ride _id
         except Exception as e:
             raise e
 
