@@ -20,8 +20,12 @@ class VehicleService:
         except Exception as e:
             raise e
 
-    def update_vehicle(self, vehicle_id, vehicle_date):
-        pass
+    def update_vehicle(self, vehicle_id, vehicle_data):
+        try:
+            result = VehicleModel.update({"_id":vehicle_id}, vehicle_data)
+            return result
+        except Exception as e:
+            raise e
 
     def delete_vehicle(self, vehicle_id):
         pass
