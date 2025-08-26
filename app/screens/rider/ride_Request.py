@@ -9,25 +9,55 @@ class RideRequestPage(ctk.CTkFrame):
         self.manager = manager
         self.ride_service = RideService()
 
+        # layout for outer frame
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
+        # content frame (centered like in LoginPage)
+        content_frame = ctk.CTkFrame(self, bg_color="transparent")
+        content_frame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
+        content_frame.grid_rowconfigure((0, 5), weight=1)
+        content_frame.grid_columnconfigure(0, weight=1)
+
         # Title
-        title = ctk.CTkLabel(self, text="🚖 Request a Ride", font=("Arial", 26, "bold"))
-        title.pack(pady=20)
+        title = ctk.CTkLabel(content_frame, text="🚖 Request a Ride", font=("Arial", 32))
+        title.grid(row=1, column=0, pady=(20, 30), sticky="n")
 
         # Pickup Location
-        self.pickup_entry = ctk.CTkEntry(self, placeholder_text="Enter pickup location")
-        self.pickup_entry.pack(pady=10, padx=40, fill="x")
+        self.pickup_entry = ctk.CTkEntry(
+            content_frame,
+            placeholder_text="Enter pickup location",
+            width=300,
+            height=40,
+            corner_radius=8
+        )
+        self.pickup_entry.grid(row=2, column=0, padx=200, pady=10, sticky="ew")
 
         # Drop Location
-        self.drop_entry = ctk.CTkEntry(self, placeholder_text="Enter drop location")
-        self.drop_entry.pack(pady=10, padx=40, fill="x")
+        self.drop_entry = ctk.CTkEntry(
+            content_frame,
+            placeholder_text="Enter drop location",
+            width=300,
+            height=40,
+            corner_radius=8
+        )
+        self.drop_entry.grid(row=3, column=0, padx=200, pady=10, sticky="ew")
 
         # Request Button
-        request_btn = ctk.CTkButton(self, text="Request Ride", command=self.request_ride)
-        request_btn.pack(pady=20)
+        request_btn = ctk.CTkButton(
+            content_frame,
+            text="Request Ride",
+            command=self.request_ride,
+            width=150,
+            height=40,
+            corner_radius=10,
+            font=("Arial", 18)
+        )
+        request_btn.grid(row=4, column=0, pady=20)
 
         # Status Label
-        self.status_label = ctk.CTkLabel(self, text="", font=("Arial", 14))
-        self.status_label.pack(pady=10)
+        self.status_label = ctk.CTkLabel(content_frame, text="", font=("Arial", 14))
+        self.status_label.grid(row=5, column=0, pady=10)
 
 
     def request_ride(self):
@@ -39,7 +69,7 @@ class RideRequestPage(ctk.CTkFrame):
 
         try:
             ride_data = {
-                "rider_id": config.loggedInUser.get("_id"), 
+                "rider_id": config.loggedInUser.get("_id"),
                 "pickup_location": pickup,
                 "drop_location": drop,
                 "fare": 100,  # dummy fare for now
