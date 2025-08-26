@@ -60,3 +60,23 @@ class BaseModel:
         collection = db_config.get_collection(cls.collection_name)
         result = collection.update_one(filter_dict, {"$set": update_data})
         return result.modified_count > 0
+    
+    @classmethod
+    def list_all_data(cls, aggregate_pipe=None):
+        """
+        Returns a list of all documents in the collection.
+        Optionally, you can provide an aggregation pipeline.
+        """
+        collection = db_config.get_collection(cls.collection_name)
+
+        # Use an empty pipeline if none provided
+        if aggregate_pipe is None:
+            aggregate_pipe = []
+
+        # Run the aggregation pipeline
+        cursor = collection.aggregate(aggregate_pipe)
+
+        # Convert the cursor to a list
+        result = list(cursor)
+
+        return result
