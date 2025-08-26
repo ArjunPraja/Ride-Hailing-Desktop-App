@@ -31,18 +31,6 @@ class RideRequestPage(ctk.CTkFrame):
 
         self.manager.show_screen("view_my_rides")
 
-          # view rides
-        view_btn = ctk.CTkButton(
-            self,
-            text="📋 View My Rides",
-            command=lambda: self.manager.show_screen("view_my_rides")
-        )
-        view_btn.pack(pady=10)
-
-      
-
-
-
     def request_ride(self):
         pickup = self.pickup_entry.get().strip()
         drop = self.drop_entry.get().strip()
