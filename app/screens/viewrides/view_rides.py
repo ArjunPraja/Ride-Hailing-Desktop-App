@@ -72,3 +72,5 @@ class ViewMyRidesPage(ctk.CTkFrame):
             ctk.CTkLabel(card, text=f"Fare: ₹{ride.get('fare', 0)}", anchor="w").pack(anchor="w", padx=10)
             ctk.CTkLabel(card, text=f"Status: {status}", text_color=color, anchor="w").pack(anchor="w", padx=10)
             ctk.CTkLabel(card, text=f"Date: {ride.get('ride_date', 'N/A')}", anchor="w").pack(anchor="w", padx=10)
+
+            

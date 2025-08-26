@@ -52,12 +52,10 @@ class RiderDashboard(ctk.CTkFrame):
         self.manager.show_screen('ride_request')
 
     def view_my_rides(self):
-        print("2. View My Rides")
-        self.status_label.configure(text="Viewing your rides...")
+        self.manager.show_screen('view_rides')
 
     def view_ride_by_id(self):
-        print("3. View Ride By ID")
-        self.status_label.configure(text="Viewing ride by ID...")
+       self.manager.show_screen('view_ride_by_id')
 
     def complete_ride(self):
         print("4. Complete Ride")

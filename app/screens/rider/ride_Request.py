@@ -29,12 +29,10 @@ class RideRequestPage(ctk.CTkFrame):
         self.status_label = ctk.CTkLabel(self, text="", font=("Arial", 14))
         self.status_label.pack(pady=10)
 
-        self.manager.show_screen("view_my_rides")
 
     def request_ride(self):
         pickup = self.pickup_entry.get().strip()
         drop = self.drop_entry.get().strip()
-
         if not pickup or not drop:
             self.status_label.configure(text="⚠ Please fill in all fields.", text_color="red")
             return
@@ -49,6 +47,7 @@ class RideRequestPage(ctk.CTkFrame):
             }
             ride_id = self.ride_service.insert_ride(ride_data)
             self.status_label.configure(text=f"✅ Ride requested! ID: {ride_id}", text_color="green")
-
+            self.manager.show_screen("view_ride_by_id")
+            
         except Exception as e:
             self.status_label.configure(text=f"❌ Error: {str(e)}", text_color="red")
