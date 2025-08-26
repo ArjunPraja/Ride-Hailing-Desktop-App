@@ -7,8 +7,10 @@ from app.screen_manager import ScreenManager
 from app.screens.landing_page import LandingPage
 from app.screens.loginpage import LoginPage
 from app.screens.registerpage import RegisterPage
-from app.screens.ride_Request import RideRequestPage
-
+from app.screens.driver.vehicleform import VehicleForm
+from app.screens.driver.driverdashboard import DriverDashboard
+from app.screens.driver.viewvehicles import ViewVehicle
+from app.screens.rider.ride_Request import RideRequestPage
 
 def main():
     ctk.set_appearance_mode("System")
@@ -21,10 +23,13 @@ def main():
 
     manager = ScreenManager(app)
     manager.add_screen("landing", LandingPage)
-    manager.add_screen("login", LoginPage)  # Assuming LoginPage is defined elsewhere
-    manager.add_screen("signup", RegisterPage)  # Assuming SignupPage is defined elsewhere
-    manager.add_screen("ride_request", RideRequestPage) 
-
+    manager.add_screen("login", LoginPage)
+    manager.add_screen("signup", RegisterPage)
+    manager.add_screen("driver_dashboard", DriverDashboard)
+    manager.add_screen("vehicle_form", VehicleForm)
+    manager.add_screen("view_vehicles", ViewVehicle)
+    manager.add_screen("ride_request", RideRequestPage)
+    
     manager.show_screen("landing")
 
     app.mainloop()

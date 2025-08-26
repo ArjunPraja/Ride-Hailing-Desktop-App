@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from models.userModel import UserModel
 from services.userService import UserService
 
 class RegisterPage(ctk.CTkFrame):
@@ -116,9 +115,12 @@ class RegisterPage(ctk.CTkFrame):
             user_service = UserService()
             user_id = user_service.insert_user(user_data)  # pass the dictionary
 
-            self.status_label.configure(
-                text=f"✅ Registered as {role}. ID: {user_id}", text_color="green"
-            )
+            if user_id:
+                self.status_label.configure(
+                    text=f"✅ Registered as {role}. ID: {user_id}", text_color="green"
+                )
+                self.manager.show_screen('login')
+
         except Exception as e:
             print(e)
             self.status_label.configure(text=f"❌ {str(e)}", text_color="red")
