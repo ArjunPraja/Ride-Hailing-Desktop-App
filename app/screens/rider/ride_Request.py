@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from services.rideService import RideService
-from config.config_var import Config
+import config.config_var as config
 
 
 class RideRequestPage(ctk.CTkFrame):
@@ -39,7 +39,7 @@ class RideRequestPage(ctk.CTkFrame):
 
         try:
             ride_data = {
-                "rider_id": Config.loggedInUser.get("_id"), 
+                "rider_id": config.loggedInUser.get("_id"), 
                 "pickup_location": pickup,
                 "drop_location": drop,
                 "fare": 100,  # dummy fare for now
