@@ -38,3 +38,23 @@ class BaseModel:
         collection = db_config.get_collection(self.collection_name)
         result = collection.delete_one({'_id': self._id})
         return result.deleted_count > 0
+    
+    @classmethod
+    def find_one(cls, filter_dict):
+        collection = db_config.get_collection(cls.collection_name)
+        data = collection.find_one(filter_dict)
+        if data:
+            return cls(**data)
+        return None
+
+    @classmethod
+    def find_many(cls, filter_dict={}):
+        collection = db_config.get_collection(cls.collection_name)
+        docs = collection.find(filter_dict)
+        return [cls(**doc) for doc in docs]
+
+    @classmethod
+    def update(cls, filter_dict, update_data):
+        collection = db_config.get_collection(cls.collection_name)
+        result = collection.update_one(filter_dict, {"$set": update_data})
+        return result.modified_count > 0

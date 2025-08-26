@@ -1,4 +1,6 @@
 import customtkinter as ctk
+from config.config_var import Config
+from services.userService import UserService
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, manager=None):
@@ -33,11 +35,23 @@ class LoginPage(ctk.CTkFrame):
         email = self.email_entry.get()
         password = self.password_entry.get()
 
-        # Dummy validation (replace with backend / DB later)
-        if email == "test@email.com" and password == "12345":
-            self.status_label.configure(text="Login Successful!", text_color="green")
-            if self.manager:
-                self.manager.show_screen("landing")  # Example: navigate to next page
+        if email and password:
+            user_service = UserService()
+            user = user_service.authenticate_user(email, password)
+            if user:
+
+                Config.loggedInUser = user
+                self.status_label.configure(text="Login Successful!", text_color="green")
+                
+                if self.manager: 
+                    if hasattr(Config.loggedInUser, 'role') and Config.loggedInUser['role'] == 'rider':
+                        self.manager.show_screen("rider_dashboard")
+                    elif hasattr(Config.loggedInUser, 'role') and Config.loggedInUser['role'] == 'rider':
+                        self.manager.show_screen("driver_dashboard")
+                    # elif hasattr(Config.loggedInUser, 'role') and Config.loggedInUser['role'] == 'admin':
+                    #     self.manager.show_screen("rider_dashboard")
+            else:
+                self.status_label.configure(text="Invalid credentials", text_color="red")
         else:
             self.status_label.configure(text="Invalid credentials", text_color="red")
 

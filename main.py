@@ -1,6 +1,6 @@
-# from config.database import db_config
+from config.database import db_config
 
-# db = db_config.connect()
+db = db_config.connect()
 
 import customtkinter as ctk
 from app.screen_manager import ScreenManager
