@@ -1,4 +1,9 @@
 from models.userModel import UserModel
+import random, smtplib
+from email.mime.text import MIMEText
+from config import config_var as config
+from datetime import datetime, timedelta
+
 class UserService:
 
     def list_users(self):
@@ -32,3 +37,43 @@ class UserService:
             return None
         except Exception as e:
             raise e
+    
+    def generate_and_send_otp(self, email):
+        """Generate OTP, store temporarily, and send to user email"""
+        otp = str(random.randint(100000, 999999))
+        expiry = datetime.now() + timedelta(minutes=5)
+
+        config.active_otps[email] = {"otp": otp, "expiry": expiry}
+        sender_email = "rideappproj@gmail.com"   # the Gmail you made
+        sender_pass = "axuvlrqbpxuxaqmx"
+        # Send OTP email
+        msg = MIMEText(f"Your OTP is: {otp}\nValid for 5 minutes.")
+        msg["Subject"] = "Your Login OTP"
+        msg["From"] = "rideappproj@gmail.com"
+        msg["To"] = email
+
+        try:
+            with smtplib.SMTP("smtp.gmail.com", 587) as server:
+                server.starttls()
+                server.login(sender_email, sender_pass)  # Gmail app password
+                server.sendmail(sender_email, [email], msg.as_string())
+            return True
+        except Exception as e:
+            print("Error sending OTP:", e)
+            return False
+
+    def verify_otp(self, email, otp):
+        """Check if OTP is valid and not expired"""
+        otp_data = config.active_otps.get(email)
+        if otp_data and otp_data["otp"] == otp and datetime.now() <= otp_data["expiry"]:
+            return True
+        return False
+
+    def authenticate_user_with_otp(self, email, otp):
+        """Login via OTP"""
+        if self.verify_otp(email, otp):
+            user = UserModel.find_one({"email": email})
+            if user:
+                return user.to_dict()
+        return None
+    
