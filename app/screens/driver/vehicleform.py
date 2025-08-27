@@ -19,7 +19,7 @@ class VehicleForm(ctk.CTkFrame):
 
         back_btn = ctk.CTkButton(
             self.content_frame, 
-            text="← Back", 
+            text="⬅ Back", 
             width=70, 
             command=self.go_back
         )

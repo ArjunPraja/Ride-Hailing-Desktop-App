@@ -26,6 +26,11 @@ class ScreenManager(ctk.CTk):
             if hasattr(screen, "fetch_ride") and "ride_id" in kwargs:
                 screen.fetch_ride(kwargs["ride_id"])
             
+            if hasattr(screen, "load_accepted_rides"):
+                screen.load_accepted_rides()
+            
+            if hasattr(screen, "load_ratings"):
+                screen.load_ratings()
 
             # if screen supports reloading with data
             if hasattr(screen, "load_vehicle_data") and "vehicle_data" in kwargs:

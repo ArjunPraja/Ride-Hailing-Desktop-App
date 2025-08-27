@@ -27,15 +27,8 @@ class LoginPage(ctk.CTkFrame):
         login_btn = ctk.CTkButton(content_frame, text="Login", command=self.handle_login, width=100, height=40, corner_radius=10, font=("Arial", 20))
         login_btn.grid(row=4, column=0, pady=10,padx=200, sticky="ew")
 
-        back_btn = ctk.CTkButton(
-            self,
-            text="⬅",
-            command=lambda: manager.show_screen("landing") if manager else None,
-            width=100,
-            height=35
-        )
-        # Use grid, row=99 makes it go to bottom, col=0 keeps it left
-        back_btn.grid(row=99, column=0, sticky="w", padx=10, pady=10)
+        back_btn = ctk.CTkButton(content_frame, text="⬅ Back", width=40, height=40, corner_radius=10, command=lambda: self.manager.show_screen("landing") if self.manager else None)
+        back_btn.grid(row=5, column=0,  pady=10,padx=200)
 
         # Status label
         self.status_label = ctk.CTkLabel(content_frame, text="", font=("Arial", 12))
@@ -51,8 +44,7 @@ class LoginPage(ctk.CTkFrame):
             if user:
 
                 config.loggedInUser = user
-                self.status_label.configure(text="Login Successful!", text_color="green")
-                self.show_popup(f"🎉 Login SuccessFull {user['name']}, {user['role']}", "green")
+                self.show_popup(f"🎉 Login Successfull {user['name']}, {user['role']}", "green")
                 # print(config.loggedInUser)
                 if self.manager: 
                     if config.loggedInUser['role'] == 'rider':
@@ -62,9 +54,9 @@ class LoginPage(ctk.CTkFrame):
                     # elif Config.loggedInUser['role'] == 'admin':
                     #     self.manager.show_screen("rider_dashboard")
             else:
-                self.status_label.configure(text="Invalid credentials", text_color="red")
+                self.show_popup("Invalid credentials", "red")
         else:
-            self.status_label.configure(text="Invalid credentials", text_color="red")
+            self.show_popup("Invalid credentials", "red")
 
     def show_popup(self, message, color="green"):
         popup = ctk.CTkToplevel(self)

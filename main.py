@@ -15,6 +15,10 @@ from app.screens.rider.ride_Request import RideRequestPage
 from app.screens.rider.riderdashboard import RiderDashboard
 from app.screens.viewrides.view_ride_by_id import ViewRideByIdPage
 from app.screens.viewrides.view_rides import ViewMyRidesPage
+from app.screens.driver.ride_request_driver import RideRequestDriver
+from app.screens.driver.accepted_rides_driver import AcceptedRideRequestsDriver
+from app.screens.driver.driver_my_rides import MyRidesDriver
+from app.screens.driver.driver_my_ratings import MyRatingsDriver
 
 def main():
     ctk.set_appearance_mode("System")
@@ -36,6 +40,10 @@ def main():
     manager.add_screen("ride_request", RideRequestPage)
     manager.add_screen("view_ride_by_id", ViewRideByIdPage)
     manager.add_screen("view_rides", ViewMyRidesPage)
+    manager.add_screen("ride_request_driver", RideRequestDriver)
+    manager.add_screen("accepted_rides_driver", AcceptedRideRequestsDriver)
+    manager.add_screen("driver_my_rides", MyRidesDriver)
+    manager.add_screen('driver_my_ratings', MyRatingsDriver)
     
     manager.show_screen("landing")
 

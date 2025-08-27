@@ -4,6 +4,9 @@ from config.database import db_config
 
 class RideService:
 
+    def list_all_rides(self):
+        return RideModel.list_all_data()
+
     def list_rides(self, role, user_id):
         pipeline = []
         if role == "rider":
@@ -47,22 +50,10 @@ class RideService:
             return RideModel.update({"_id": ObjectId(ride_id)}, ride_data)
         except Exception as e:
             raise e
+    
     def add_rating(self, ride_id, rating):
         try:
-            collection = db_config.get_collection(RideModel.collection_name)
-
-            existing = RideModel.find_one({
-                "_id": ObjectId(ride_id),
-                "ratings.given_by": rating["given_by"]
-            })
-            if existing:
-                return False  
-
-            result = collection.update_one(
-                {"_id": ObjectId(ride_id)},
-                {"$push": {"ratings": rating}}
-            )
-            return result.modified_count > 0
+            return RideModel.update({"_id": ObjectId(str(ride_id))}, {"ratings" : rating})
         except Exception as e:
             raise e
 

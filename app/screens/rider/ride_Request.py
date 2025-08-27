@@ -64,7 +64,7 @@ class RideRequestPage(ctk.CTkFrame):
         #Back
         back_btn = ctk.CTkButton(
             self,
-            text="⬅",
+            text="⬅ Back",
             command=lambda: self.manager.show_screen("rider_dashboard"),
             width=100,
             height=35

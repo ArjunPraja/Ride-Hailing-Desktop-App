@@ -57,7 +57,7 @@ class RegisterPage(ctk.CTkFrame):
         # Back button
         back_btn = ctk.CTkButton(
             self.content_frame, 
-            text="Back", 
+            text="⬅ Back", 
             command=lambda: self.manager.show_screen("landing") if self.manager else None,
             width=100,
             height=40,
