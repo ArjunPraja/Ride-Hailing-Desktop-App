@@ -63,15 +63,8 @@ class LoginPage(ctk.CTkFrame):
         #                               corner_radius=8, font=("Arial", 14))
         # otp_login_btn.grid(row=7, column=0, pady=5, padx=200, sticky="ew")
 
-        back_btn = ctk.CTkButton(
-            self,
-            text="⬅",
-            command=lambda: manager.show_screen("landing") if manager else None,
-            width=100,
-            height=35
-        )
-        # Use grid, row=99 makes it go to bottom, col=0 keeps it left
-        back_btn.grid(row=99, column=0, sticky="w", padx=10, pady=10)
+        back_btn = ctk.CTkButton(content_frame, text="⬅ Back", width=40, height=40, corner_radius=10, command=lambda: self.manager.show_screen("landing") if self.manager else None)
+        back_btn.grid(row=5, column=0,  pady=10,padx=200)
 
         # Status label
         self.status_label = ctk.CTkLabel(content_frame, text="", font=("Arial", 12))
@@ -149,6 +142,7 @@ class LoginPage(ctk.CTkFrame):
     def handle_login(self):
         email = self.email_entry.get()
 
+<<<<<<< HEAD
         if self.current_mode == "password":
             password = self.password_entry.get()
             if email and password:
@@ -191,6 +185,27 @@ class LoginPage(ctk.CTkFrame):
                 self.manager.show_screen("rider_dashboard")
             elif user['role'] == 'driver':
                 self.manager.show_screen("driver_dashboard")
+=======
+        if email and password:
+            user_service = UserService()
+            user = user_service.authenticate_user(email, password)
+            if user:
+
+                config.loggedInUser = user
+                self.show_popup(f"🎉 Login Successfull {user['name']}, {user['role']}", "green")
+                # print(config.loggedInUser)
+                if self.manager: 
+                    if config.loggedInUser['role'] == 'rider':
+                        self.manager.show_screen("rider_dashboard")
+                    elif config.loggedInUser['role'] == 'driver':
+                        self.manager.show_screen("driver_dashboard")
+                    # elif Config.loggedInUser['role'] == 'admin':
+                    #     self.manager.show_screen("rider_dashboard")
+            else:
+                self.show_popup("Invalid credentials", "red")
+        else:
+            self.show_popup("Invalid credentials", "red")
+>>>>>>> 36f0b177ba41b1955237ce6d71939169004f1481
 
     def show_popup(self, message, color="green"):
         popup = ctk.CTkToplevel(self)

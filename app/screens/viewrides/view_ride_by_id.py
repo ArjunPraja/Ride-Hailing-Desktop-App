@@ -22,9 +22,11 @@ class ViewRideByIdPage(ctk.CTkFrame):
             text="⬅ Back",
             command=lambda: self.manager.show_screen("rider_dashboard") if self.manager else None,
             width=100,
-            height=35
+            height=40,
+            corner_radius=10,
+            font=("Arial", 14)
         )
-        back_btn.pack(pady=10, anchor="w", padx=10)
+        back_btn.pack(pady=10)
 
 
     def clear_details(self):
@@ -75,7 +77,7 @@ class ViewRideByIdPage(ctk.CTkFrame):
         self.add_detail("Fare", f"₹{ride.get('fare', 0)}")
 
         status = ride.get("status", "Unknown")
-        color = "green" if status.lower() == "completed" else "orange" if status.lower() == "ongoing" else "red"
+        color = "green" if status.lower() == "completed" else "orange" if status.lower() == "in_progress" else "red"
         self.add_detail("Status", status, text_color=color, bold=True)
 
         self.add_detail("Date", str(ride.get("ride_date", "N/A")))

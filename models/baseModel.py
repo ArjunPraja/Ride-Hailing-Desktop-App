@@ -58,6 +58,7 @@ class BaseModel:
     @classmethod
     def update(cls, filter_dict, update_data):
         collection = db_config.get_collection(cls.collection_name)
+        update_data['updated_at'] = datetime.now(timezone.utc)
         result = collection.update_one(filter_dict, {"$set": update_data})
         return result.modified_count > 0
     

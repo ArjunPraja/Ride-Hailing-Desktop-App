@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from tkinter import messagebox, simpledialog
+from tkinter import messagebox
 import config.config_var as Config
 from services.rideService import RideService
 
@@ -18,7 +18,7 @@ class ViewMyRidesPage(ctk.CTkFrame):
 
         back_btn = ctk.CTkButton(
             self,
-            text="Back",
+            text="⬅ Back",
             command=lambda: self.manager.show_screen("rider_dashboard") if self.manager else None,
             width=100,
             height=40,
@@ -51,8 +51,8 @@ class ViewMyRidesPage(ctk.CTkFrame):
         user = Config.loggedInUser
         driver_id = self.ride_service.get_driver_for_ride(ride_id) or ""
         rating = {
-            "given_by": str(user["_id"]),
-            "given_to": str(driver_id),
+            "given_by": user["_id"],
+            "given_to": driver_id,
             "score": int(score),
             "comment": comment.strip()
         }
@@ -66,19 +66,6 @@ class ViewMyRidesPage(ctk.CTkFrame):
                 messagebox.showinfo("Already Rated", "You have already rated this ride.")
         except Exception as e:
             messagebox.showerror("Error", f"Error saving rating: {e}")
-
-
-    #complete ride
-    def complete_ride(self, ride_id):
-        try:
-            success = self.ride_service.update_ride(ride_id, {"status": "completed"})
-            if success:
-                messagebox.showinfo("Success", f"Ride {ride_id} marked as completed.")
-                self.fetch_my_rides()  
-            else:
-                messagebox.showerror("Error", f"Could not complete ride {ride_id}.")
-        except Exception as e:
-            messagebox.showerror("Error", f"Error completing ride: {e}")
 
 
     def fetch_my_rides(self):
@@ -113,7 +100,7 @@ class ViewMyRidesPage(ctk.CTkFrame):
 
             # Status color
             status = ride.get("status", "Unknown")
-            color = "green" if status.lower() == "completed" else "orange" if status.lower() == "ongoing" else "red"
+            color = "green" if status.lower() == "completed" else "orange" if status.lower() == "in_progress" else "red"
 
             # Labels inside card
             ctk.CTkLabel(card, text=f"Ride ID: {ride.get('_id')}", font=("Arial", 11, "bold")).pack(anchor="w", padx=10, pady=2)
@@ -123,18 +110,16 @@ class ViewMyRidesPage(ctk.CTkFrame):
             ctk.CTkLabel(card, text=f"Status: {status}", text_color=color, anchor="w").pack(anchor="w", padx=10)
             ctk.CTkLabel(card, text=f"Date: {ride.get('ride_date', 'N/A')}", anchor="w").pack(anchor="w", padx=10)
             
-            ratings = ride.get("ratings", [])
+            rating = ride.get("ratings")
             user_id = str(Config.loggedInUser["_id"])
 
-            already_rated = any(isinstance(r, dict) and r.get("given_by") == user_id for r in ratings)
-
-            if status.lower() == "completed" and role == "rider":
-                if already_rated:
-                    for r in ratings:
-                        if isinstance(r, dict) and r.get("given_by") == user_id:
-                            ctk.CTkLabel(card, text=f"Your Rating: {r['score']}/5", anchor="w", text_color="blue").pack(anchor="w", padx=10, pady=(5,0))
-                            if r.get("comment"):
-                                ctk.CTkLabel(card, text=f"Comment: {r['comment']}", anchor="w").pack(anchor="w", padx=10)
+            if status.lower() == "completed" and Config.loggedInUser.get("role") == "rider":
+                print(rating)
+                if rating and rating.get("given_by") and str(rating.get("given_by")) == user_id:
+                    # Show user's rating
+                    ctk.CTkLabel(card, text=f"Your Rating: {rating['score']}/5", anchor="w", text_color="blue").pack(anchor="w", padx=10, pady=(5,0))
+                    if rating.get("comment"):
+                        ctk.CTkLabel(card, text=f"Comment: {rating['comment']}", anchor="w").pack(anchor="w", padx=10)
                 else:
                     # add rating UI
                     ctk.CTkLabel(card, text="Rate this ride:", font=("Arial", 10, "bold")).pack(anchor="w", padx=10, pady=(5,0))
@@ -155,20 +140,11 @@ class ViewMyRidesPage(ctk.CTkFrame):
                     )
                     submit_btn.pack(anchor="e", padx=10, pady=5)
 
-            if status.lower() in ["requested", "accepted", "ongoing"]:
+            if status.lower() in ["requested", "accepted", "in_progress"]:
                 ctk.CTkButton(
                     card,
                     text="Cancel Ride",
                     command=lambda ride_id=ride["_id"]: self.cancel_ride(ride_id),
                     fg_color="red",
                     hover_color="darkred"
-                ).pack(pady=5, padx=10, anchor="e")
-            
-            if status.lower() == "ongoing" and role == "driver":
-                ctk.CTkButton(
-                    card,
-                    text="Complete Ride",
-                    command=lambda ride_id=ride["_id"]: self.complete_ride(ride_id),
-                    fg_color="green",
-                    hover_color="darkgreen"
                 ).pack(pady=5, padx=10, anchor="e")

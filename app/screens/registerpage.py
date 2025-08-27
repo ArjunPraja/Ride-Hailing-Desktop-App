@@ -42,10 +42,6 @@ class RegisterPage(ctk.CTkFrame):
         # Placeholder for license entry (hidden initially)
         self.license_entry = None
 
-        # if self.role_dropdown.get() == "driver":
-        #     self.license_entry = ctk.CTkEntry(self.content_frame, placeholder_text="Enter your license number", width=250, height=40, corner_radius=8)
-        #     self.license_entry.grid(row=6, column=0, padx=200, pady=10, sticky="ew")
-
         self.password_entry = ctk.CTkEntry(self.content_frame, placeholder_text="Enter your password", show="*", width=250, height=40, corner_radius=8)
         self.password_entry.grid(row=7, column=0, padx=200, pady=10, sticky="ew")
 
@@ -57,7 +53,7 @@ class RegisterPage(ctk.CTkFrame):
         # Back button
         back_btn = ctk.CTkButton(
             self.content_frame, 
-            text="Back", 
+            text="⬅ Back", 
             command=lambda: self.manager.show_screen("landing") if self.manager else None,
             width=100,
             height=40,
@@ -164,3 +160,42 @@ class RegisterPage(ctk.CTkFrame):
             command=popup.destroy
         )
         ok_button.pack(pady=10)
+
+def reset_screen(self):
+    """Clear all fields and make placeholders appear immediately (CTk v5.2.2)."""
+    # Collect entries to clear
+    entries = [
+        getattr(self, "name_entry", None),
+        getattr(self, "email_entry", None),
+        getattr(self, "phone_no_entry", None),
+        getattr(self, "password_entry", None),
+        getattr(self, "confirm_password_entry", None),
+        getattr(self, "license_entry", None)
+    ]
+    entries = [e for e in entries if e]
+
+    # Clear each entry
+    for e in entries:
+        e.delete(0, "end")
+
+    # Reset dropdown if present
+    if hasattr(self, "role_dropdown"):
+        self.role_dropdown.set("Select Role")
+
+    # Reset status
+    self.status_label.configure(text="")
+
+    # Make sure the parent frame has focus (so entries are unfocused)
+    self.focus_set()
+
+    # Force CTkEntry to redraw its placeholder
+    for e in entries:
+        try:
+            e.event_generate("<FocusOut>")   # triggers CTk's built-in focus-out logic
+        except Exception:
+            pass
+        if hasattr(e, "_draw_placeholder"):  # CTk 5.2.2 method
+            try:
+                e._draw_placeholder()
+            except Exception:
+                pass
