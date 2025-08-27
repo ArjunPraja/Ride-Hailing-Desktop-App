@@ -17,6 +17,14 @@ class VehicleForm(ctk.CTkFrame):
         self.content_frame.grid_rowconfigure((0,10), weight=1)
         self.content_frame.grid_columnconfigure(0, weight=1)
 
+        back_btn = ctk.CTkButton(
+            self.content_frame, 
+            text="← Back", 
+            width=70, 
+            command=self.go_back
+        )
+        back_btn.grid(row=0, column=0, sticky="w", padx=12, pady=(8,5))
+
         # Header
         mode_text = "Vehicle"
         label = ctk.CTkLabel(self.content_frame, text=mode_text, font=("Arial", 40))
@@ -112,3 +120,9 @@ class VehicleForm(ctk.CTkFrame):
         except Exception as e:
             print(e)
             self.status_label.configure(text=f"❌ {str(e)}", text_color="red")
+
+    def go_back(self):
+        if self.vehicle_data:
+            self.manager.show_screen('view_vehicles')
+        else:
+            self.manager.show_screen('driver_dashboard')
