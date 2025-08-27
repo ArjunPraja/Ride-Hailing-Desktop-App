@@ -48,9 +48,11 @@ class ViewMyRidesPage(ctk.CTkFrame):
     #rating
     def submit_rating(self, ride_id, score, comment):
         user = Config.loggedInUser
+        ride = self.ride_service.get_ride(ride_id)
+        driver_id = ride.get("driver_id", "")
         rating = {
-            "given_by": {"id": user["_id"], "role": user.get("role", "rider")},
-            "given_to": {"id": "driver_id_here", "role": "driver"}, 
+            "given_by": str(user["_id"]),   
+            "given_to": str("driver_id", ""),
             "score": int(score),
             "comment": comment.strip()
         }
@@ -80,7 +82,6 @@ class ViewMyRidesPage(ctk.CTkFrame):
 
 
     def fetch_my_rides(self):
-        """Fetch all rides for the logged-in user"""
         self.clear_rides()
 
         if not Config.loggedInUser:
@@ -123,9 +124,9 @@ class ViewMyRidesPage(ctk.CTkFrame):
             ctk.CTkLabel(card, text=f"Date: {ride.get('ride_date', 'N/A')}", anchor="w").pack(anchor="w", padx=10)
             
             ratings = ride.get("ratings", [])
-            user_role = Config.loggedInUser.get("role", "rider")
+            user_id = str(Config.loggedInUser["_id"])
 
-            already_rated = any(r.get("given_by") == user_role for r in ratings)
+            already_rated = any(r.get("given_by") == user_id for r in ratings)
 
             if status.lower() == "completed" and role == "rider":
                 if already_rated:

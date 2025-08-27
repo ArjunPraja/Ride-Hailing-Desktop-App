@@ -5,9 +5,10 @@ class RideModel(BaseModel):
 
     collection_name = "rides"
 
-    def __init__(self, rider_id, pickup_location, drop_location, fare, status,ratings=None, **data):
+    def __init__(self, rider_id, pickup_location, drop_location, fare,status,driver_id=None, ratings=None, **data):
         super().__init__(**data)
         self.rider_id = rider_id
+        self.driver_id = driver_id
         self.pickup_location = pickup_location
         self.drop_location = drop_location
         self.fare = fare
@@ -24,6 +25,13 @@ class RideModel(BaseModel):
              ObjectId(str(self.rider_id))
         except Exception:
              errors.append("Invalid rider_id.")
+        
+        #driver_id validation: must be a valid ObjectId string
+        if self.driver_id:
+            try:
+                ObjectId(str(self.driver_id))
+            except Exception:
+                errors.append("Invalid driver_id.")
 
         # pickup_location and drop_location: should not be empty
         if not self.pickup_location or not self.pickup_location.strip():

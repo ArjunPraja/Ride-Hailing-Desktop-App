@@ -66,6 +66,11 @@ class RideService:
         except Exception as e:
             raise e
 
+    def get_driver_for_ride(self, ride_id):
+        ride = RideModel.find_one({"_id": ObjectId(ride_id)})
+        if ride:
+            return str(ride.get("driver_id", ""))
+        return ""
 
     def delete_ride(self, ride_id):
         pass
