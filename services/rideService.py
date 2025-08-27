@@ -1,5 +1,7 @@
 from models.rideModel import RideModel
 from bson import ObjectId
+from config.database import db_config
+
 class RideService:
 
     def list_rides(self, role, user_id):
@@ -45,6 +47,27 @@ class RideService:
             return RideModel.update({"_id": ObjectId(ride_id)}, ride_data)
         except Exception as e:
             raise e
+    def add_rating(self, ride_id, rating):
+        try:
+            collection = db_config.get_collection(RideModel.collection_name)
 
-    def delete_ride(self, ride_id):
-        pass
+            existing = RideModel.find_one({
+                "_id": ObjectId(ride_id),
+                "ratings.given_by": rating["given_by"]
+            })
+            if existing:
+                return False  
+
+            result = collection.update_one(
+                {"_id": ObjectId(ride_id)},
+                {"$push": {"ratings": rating}}
+            )
+            return result.modified_count > 0
+        except Exception as e:
+            raise e
+
+    def get_driver_for_ride(self, ride_id):
+        ride = RideModel.find_one({"_id": ObjectId(ride_id)})
+        if ride and hasattr(ride, "driver_id"):
+            return str(ride.driver_id)
+        return ""

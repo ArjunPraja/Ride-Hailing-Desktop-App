@@ -61,6 +61,16 @@ class RideRequestPage(ctk.CTkFrame):
         self.status_label = ctk.CTkLabel(content_frame, text="", font=("Arial", 14))
         self.status_label.grid(row=5, column=0, pady=10)
 
+        #Back
+        back_btn = ctk.CTkButton(
+            self,
+            text="⬅",
+            command=lambda: self.manager.show_screen("rider_dashboard"),
+            width=100,
+            height=35
+        )
+        back_btn.grid(row=99, column=0, sticky="w", padx=10, pady=10)
+
 
     def request_ride(self):
         pickup = self.pickup_entry.get().strip()

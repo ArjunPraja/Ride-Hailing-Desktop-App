@@ -51,3 +51,6 @@ class RiderDashboard(ctk.CTkFrame):
         self.status_label.configure(text="Logging out...")
         self.manager.show_screen("landing")
         
+    def reset_screen(self):
+        self.status_label.configure(text="")
+        
