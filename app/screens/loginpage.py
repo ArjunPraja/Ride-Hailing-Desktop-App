@@ -25,11 +25,13 @@ class LoginPage(ctk.CTkFrame):
         self.password_entry.grid(row=3, column=0, padx=200, pady=10, sticky="ew")
 
         login_btn = ctk.CTkButton(content_frame, text="Login", command=self.handle_login, width=100, height=40, corner_radius=10, font=("Arial", 20))
-        login_btn.grid(row=4, column=0, pady=10)
+        login_btn.grid(row=4, column=0, pady=10,padx=200, sticky="ew")
 
+        back_btn = ctk.CTkButton(content_frame, text="Back", command=lambda: manager.show_screen("landing") if manager else None)
+        back_btn.grid(row=5, column=0, pady=10,padx=200, sticky="ew")
         # Status label
         self.status_label = ctk.CTkLabel(content_frame, text="", font=("Arial", 12))
-        self.status_label.grid(row=5, column=0, pady=5)
+        self.status_label.grid(row=6, column=0, pady=5)
 
     def handle_login(self):
         email = self.email_entry.get()
@@ -42,6 +44,7 @@ class LoginPage(ctk.CTkFrame):
 
                 config.loggedInUser = user
                 self.status_label.configure(text="Login Successful!", text_color="green")
+                self.show_popup(f"🎉 Login SuccessFull {user['name']}, {user['role']}", "green")
                 # print(config.loggedInUser)
                 if self.manager: 
                     if config.loggedInUser['role'] == 'rider':
@@ -55,3 +58,29 @@ class LoginPage(ctk.CTkFrame):
         else:
             self.status_label.configure(text="Invalid credentials", text_color="red")
 
+    def show_popup(self, message, color="green"):
+        popup = ctk.CTkToplevel(self)
+        popup.geometry("400x180")
+        popup.title("Notification")
+        popup.grab_set()  # Make modal
+
+        popup_label = ctk.CTkLabel(
+            popup, 
+            text=message, 
+            font=("Arial", 18, "bold"), 
+            text_color=color,
+            wraplength=350,
+            justify="center"
+        )
+        popup_label.pack(expand=True, pady=30, padx=20)
+
+        ok_button = ctk.CTkButton(
+            popup, 
+            text="OK ✅", 
+            width=100,
+            height=40,
+            font=("Arial", 14, "bold"),
+            corner_radius=12,
+            command=popup.destroy
+        )
+        ok_button.pack(pady=10)

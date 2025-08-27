@@ -50,10 +50,21 @@ class RegisterPage(ctk.CTkFrame):
         self.password_entry.grid(row=7, column=0, padx=200, pady=10, sticky="ew")
 
         self.confirm_password_entry = ctk.CTkEntry(self.content_frame, placeholder_text="Confirm your password", show="*", width=250, height=40, corner_radius=8)
-        self.confirm_password_entry.grid(row=8, column=0, padx=200, pady=10, sticky="ew")
+        self.confirm_password_entry.grid(row=8, column=0, padx=200, pady=5, sticky="ew")
 
         register_btn = ctk.CTkButton(self.content_frame, text="Register", command=self.handle_register, width=100, height=40, corner_radius=10, font=("Arial", 20))
         register_btn.grid(row=9, column=0, pady=10)
+        # Back button
+        back_btn = ctk.CTkButton(
+            self.content_frame, 
+            text="Back", 
+            command=lambda: self.manager.show_screen("landing") if self.manager else None,
+            width=100,
+            height=40,
+            corner_radius=10,
+            font=("Arial", 16)
+        )
+        back_btn.grid(row=11, column=0, pady=(5,10), padx=330, sticky="ew")
 
         # Status label
         self.status_label = ctk.CTkLabel(self.content_frame, text="", font=("Arial", 12))
@@ -119,8 +130,37 @@ class RegisterPage(ctk.CTkFrame):
                 self.status_label.configure(
                     text=f"✅ Registered as {role}. ID: {user_id}", text_color="green"
                 )
+                 # Show sexy pop-up
+                self.show_popup(f"🎉 Successfully Registered as {role}!\nID: {user_id}", "green")
                 self.manager.show_screen('login')
 
         except Exception as e:
             print(e)
             self.status_label.configure(text=f"❌ {str(e)}", text_color="red")
+
+    def show_popup(self, message, color="green"):
+        popup = ctk.CTkToplevel(self)
+        popup.geometry("400x180")
+        popup.title("Notification")
+        popup.grab_set()  # Make modal
+
+        popup_label = ctk.CTkLabel(
+            popup, 
+            text=message, 
+            font=("Arial", 18, "bold"), 
+            text_color=color,
+            wraplength=350,
+            justify="center"
+        )
+        popup_label.pack(expand=True, pady=30, padx=20)
+
+        ok_button = ctk.CTkButton(
+            popup, 
+            text="OK ✅", 
+            width=100,
+            height=40,
+            font=("Arial", 14, "bold"),
+            corner_radius=12,
+            command=popup.destroy
+        )
+        ok_button.pack(pady=10)

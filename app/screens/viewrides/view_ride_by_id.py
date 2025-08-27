@@ -17,6 +17,18 @@ class ViewRideByIdPage(ctk.CTkFrame):
         self.details_frame = ctk.CTkScrollableFrame(self, corner_radius=12, width=380, height=250)
         self.details_frame.pack(pady=15, padx=10, fill="both", expand=True)
 
+        back_btn = ctk.CTkButton(
+            self,
+            text="Back",
+            command=lambda: self.manager.show_screen("rider_dashboard") if self.manager else None,
+            width=100,
+            height=40,
+            corner_radius=10,
+            font=("Arial", 14)
+        )
+        back_btn.pack(pady=10)
+
+
     def clear_details(self):
         for widget in self.details_frame.winfo_children():
             widget.destroy()

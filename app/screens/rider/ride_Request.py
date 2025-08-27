@@ -55,6 +55,8 @@ class RideRequestPage(ctk.CTkFrame):
         )
         request_btn.grid(row=4, column=0, pady=20)
 
+        
+
         # Status Label
         self.status_label = ctk.CTkLabel(content_frame, text="", font=("Arial", 14))
         self.status_label.grid(row=5, column=0, pady=10)
@@ -77,8 +79,37 @@ class RideRequestPage(ctk.CTkFrame):
             }
             ride_id = self.ride_service.insert_ride(ride_data)
             self.status_label.configure(text=f"✅ Ride requested! ID: {ride_id}", text_color="green")
+            self.show_popup(f"✅ Ride requested! ID: {ride_id}", color="green")
             self.manager.show_screen("view_ride_by_id", ride_id=ride_id)
             
 
         except Exception as e:
             self.status_label.configure(text=f"❌ Error: {str(e)}", text_color="red")
+    
+      # ---------------- Sexy Pop-up function ----------------
+    def show_popup(self, message, color="green"):
+        popup = ctk.CTkToplevel(self)
+        popup.geometry("400x180")
+        popup.title("Notification")
+        popup.grab_set()  # Make modal
+
+        popup_label = ctk.CTkLabel(
+            popup, 
+            text=message, 
+            font=("Arial", 18, "bold"), 
+            text_color=color,
+            wraplength=350,
+            justify="center"
+        )
+        popup_label.pack(expand=True, pady=30, padx=20)
+
+        ok_button = ctk.CTkButton(
+            popup, 
+            text="OK ✅", 
+            width=100,
+            height=40,
+            font=("Arial", 14, "bold"),
+            corner_radius=12,
+            command=popup.destroy
+        )
+        ok_button.pack(pady=10)
