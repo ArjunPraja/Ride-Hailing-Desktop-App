@@ -12,15 +12,6 @@ class ScreenManager(ctk.CTk):
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_columnconfigure(0, weight=1)
 
-    def reset_screen(self):
-        self.email_entry.delete(0, "end")
-        self.password_entry.delete(0, "end")
-        self.status_label.configure(text="")
-
-    def reset_screen(self):
-        self.status_label.configure(text="")
-
-
     def show_screen(self, name, **kwargs):
         screen = self.screens.get(name)
         if screen:

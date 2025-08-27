@@ -123,3 +123,8 @@ class RideRequestPage(ctk.CTkFrame):
             command=popup.destroy
         )
         ok_button.pack(pady=10)
+
+    def reset_screen(self):
+        self.pickup_entry.delete(0, "end")
+        self.drop_entry.delete(0, "end")
+        self.status_label.configure(text="")

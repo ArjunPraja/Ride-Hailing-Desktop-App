@@ -19,14 +19,12 @@ class ViewRideByIdPage(ctk.CTkFrame):
 
         back_btn = ctk.CTkButton(
             self,
-            text="Back",
+            text="⬅ Back",
             command=lambda: self.manager.show_screen("rider_dashboard") if self.manager else None,
             width=100,
-            height=40,
-            corner_radius=10,
-            font=("Arial", 14)
+            height=35
         )
-        back_btn.pack(pady=10)
+        back_btn.pack(pady=10, anchor="w", padx=10)
 
 
     def clear_details(self):

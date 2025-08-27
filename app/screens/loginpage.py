@@ -27,8 +27,16 @@ class LoginPage(ctk.CTkFrame):
         login_btn = ctk.CTkButton(content_frame, text="Login", command=self.handle_login, width=100, height=40, corner_radius=10, font=("Arial", 20))
         login_btn.grid(row=4, column=0, pady=10,padx=200, sticky="ew")
 
-        back_btn = ctk.CTkButton(content_frame, text="Back", command=lambda: manager.show_screen("landing") if manager else None)
-        back_btn.grid(row=5, column=0, pady=10,padx=200, sticky="ew")
+        back_btn = ctk.CTkButton(
+            self,
+            text="⬅",
+            command=lambda: manager.show_screen("landing") if manager else None,
+            width=100,
+            height=35
+        )
+        # Use grid, row=99 makes it go to bottom, col=0 keeps it left
+        back_btn.grid(row=99, column=0, sticky="w", padx=10, pady=10)
+
         # Status label
         self.status_label = ctk.CTkLabel(content_frame, text="", font=("Arial", 12))
         self.status_label.grid(row=6, column=0, pady=5)
@@ -84,3 +92,10 @@ class LoginPage(ctk.CTkFrame):
             command=popup.destroy
         )
         ok_button.pack(pady=10)
+    
+    def reset_screen(self):
+        self.email_entry.delete(0, "end")
+        self.password_entry.delete(0, "end")
+        self.status_label.configure(text="")
+        self.email_entry.update_idletasks()
+        self.password_entry.update_idletasks()

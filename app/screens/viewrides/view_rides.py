@@ -126,12 +126,12 @@ class ViewMyRidesPage(ctk.CTkFrame):
             ratings = ride.get("ratings", [])
             user_id = str(Config.loggedInUser["_id"])
 
-            already_rated = any(r.get("given_by") == user_id for r in ratings)
+            already_rated = any(isinstance(r, dict) and r.get("given_by") == user_id for r in ratings)
 
             if status.lower() == "completed" and role == "rider":
                 if already_rated:
                     for r in ratings:
-                        if r.get("given_by") == user_id:
+                        if isinstance(r, dict) and r.get("given_by") == user_id:
                             ctk.CTkLabel(card, text=f"Your Rating: {r['score']}/5", anchor="w", text_color="blue").pack(anchor="w", padx=10, pady=(5,0))
                             if r.get("comment"):
                                 ctk.CTkLabel(card, text=f"Comment: {r['comment']}", anchor="w").pack(anchor="w", padx=10)
