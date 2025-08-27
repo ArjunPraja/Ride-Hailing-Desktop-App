@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
 
@@ -8,7 +9,9 @@ class DatabaseConfig:
         self._client = None
         self._db = None
 
-        self.MONGODB_URI = os.getenv('MONODB_URI', 'mongodb://localhost:27017/')
+        load_dotenv()
+
+        self.MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
         self.DATABASE_NAME = os.getenv('DATABASE_NAME', 'RideHailingDeskAppTkinter')
         self.CONNECT_TIMEOUT = int(os.getenv('CONNECT_TIMEOUT', 5000)) 
         self.SERVER_SELECTION_TIMEOUT = int(os.getenv('SERVER_SELECTION_TIMEOUT', 5000))
