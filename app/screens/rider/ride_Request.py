@@ -2,6 +2,7 @@ import customtkinter as ctk
 from services.rideService import RideService
 import config.config_var as config
 import random
+from app.utils.helpers import get_all_entries
 
 class RideRequestPage(ctk.CTkFrame):
     def __init__(self, parent, manager=None):
@@ -125,6 +126,22 @@ class RideRequestPage(ctk.CTkFrame):
         ok_button.pack(pady=10)
 
     def reset_screen(self):
-        self.pickup_entry.delete(0, "end")
-        self.drop_entry.delete(0, "end")
-        self.status_label.configure(text="")
+            entries = get_all_entries(self)
+
+            for e in entries:
+                e.delete(0, "end")
+
+            self.status_label.configure(text="")
+
+            self.focus_set()
+
+            for e in entries:
+                try:
+                    e.event_generate("<FocusOut>")
+                except Exception:
+                    pass
+                if hasattr(e, "_draw_placeholder"):
+                    try:
+                        e._draw_placeholder()
+                    except Exception:
+                        pass

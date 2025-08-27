@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import config.config_var as config
 from services.vehicleService import VehicleService
+from app.utils.helpers import get_all_entries
 
 class VehicleForm(ctk.CTkFrame):
     def __init__(self, parent, manager=None, vehicle_data=None):
@@ -126,3 +127,22 @@ class VehicleForm(ctk.CTkFrame):
             self.manager.show_screen('view_vehicles')
         else:
             self.manager.show_screen('driver_dashboard')
+
+    def reset_screen(self):
+            entries=get_all_entries(self)
+            for e in entries:
+                e.delete(0, "end")
+
+            self.status_label.configure(text="")
+            self.focus_set()
+
+            for e in entries:
+                try:
+                    e.event_generate("<FocusOut>")
+                except Exception:
+                    pass
+                if hasattr(e, "_draw_placeholder"):
+                    try:
+                        e._draw_placeholder()
+                    except Exception:
+                        pass

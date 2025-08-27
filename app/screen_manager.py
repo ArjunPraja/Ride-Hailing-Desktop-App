@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from app.utils.helpers import get_all_entries
 
 class ScreenManager(ctk.CTk):
     def __init__(self, root):
@@ -15,10 +16,22 @@ class ScreenManager(ctk.CTk):
     def show_screen(self, name, **kwargs):
         screen = self.screens.get(name)
         if screen:
+        
+            screen.tkraise()
 
-            #clearing the old data - for now...
+             # all entries
+            entries = get_all_entries(screen)
+
+            user_typed = any(entry.get().strip() != "" for entry in entries)
+
+            # reset
             if hasattr(screen, "reset_screen"):
-                screen.reset_screen()
+                if user_typed and hasattr(screen, "_has_been_loaded"):  
+                    screen.reset_screen()
+                else:
+                    screen._has_been_loaded = True
+            if hasattr(screen, "status_label"):
+                screen.status_label.configure(text="") 
 
             if hasattr(screen, "fetch_my_rides"):
                 screen.fetch_my_rides()
@@ -40,4 +53,5 @@ class ScreenManager(ctk.CTk):
             # if screen supports reloading with data
             elif hasattr(screen, "load_vehicles"):
                 screen.load_vehicles()
-            screen.tkraise()
+            
+          

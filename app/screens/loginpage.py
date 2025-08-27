@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import config.config_var as config
 from services.userService import UserService
+from app.utils.helpers import get_all_entries
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, manager=None):
@@ -212,9 +213,25 @@ class LoginPage(ctk.CTkFrame):
         )
         ok_button.pack(pady=10)
     
-    def reset_screen(self):
-        self.email_entry.delete(0, "end")
-        self.password_entry.delete(0, "end")
+    def reset_screen(self): 
+        entries = get_all_entries(self)
+
+        for e in entries:
+            e.delete(0, "end")
+
         self.status_label.configure(text="")
-        self.email_entry.update_idletasks()
-        self.password_entry.update_idletasks()
+
+        # Force focus away 
+        self.focus_set()
+
+        for e in entries:
+            try:
+                e.event_generate("<FocusOut>")
+            except Exception:
+                pass
+            if hasattr(e, "_draw_placeholder"):
+                try:
+                    e._draw_placeholder()
+                except Exception:
+                    pass
+        

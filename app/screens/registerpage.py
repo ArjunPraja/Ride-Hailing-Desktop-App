@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from services.userService import UserService
+from app.utils.helpers import get_all_entries
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, manager=None):
@@ -161,41 +162,31 @@ class RegisterPage(ctk.CTkFrame):
         )
         ok_button.pack(pady=10)
 
-def reset_screen(self):
-    """Clear all fields and make placeholders appear immediately (CTk v5.2.2)."""
-    # Collect entries to clear
-    entries = [
-        getattr(self, "name_entry", None),
-        getattr(self, "email_entry", None),
-        getattr(self, "phone_no_entry", None),
-        getattr(self, "password_entry", None),
-        getattr(self, "confirm_password_entry", None),
-        getattr(self, "license_entry", None)
-    ]
-    entries = [e for e in entries if e]
+    def reset_screen(self):
+        entries = get_all_entries(self)
 
-    # Clear each entry
-    for e in entries:
-        e.delete(0, "end")
+        # Clear each entry
+        for e in entries:
+            e.delete(0, "end")
 
-    # Reset dropdown if present
-    if hasattr(self, "role_dropdown"):
-        self.role_dropdown.set("Select Role")
+        # Reset dropdown if present
+        if hasattr(self, "role_dropdown"):
+            self.role_dropdown.set("Select Role")
 
-    # Reset status
-    self.status_label.configure(text="")
+        # Reset status
+        self.status_label.configure(text="")
 
-    # Make sure the parent frame has focus (so entries are unfocused)
-    self.focus_set()
+        # Make sure the parent frame has focus (so entries are unfocused)
+        self.focus_set()
 
-    # Force CTkEntry to redraw its placeholder
-    for e in entries:
-        try:
-            e.event_generate("<FocusOut>")   # triggers CTk's built-in focus-out logic
-        except Exception:
-            pass
-        if hasattr(e, "_draw_placeholder"):  # CTk 5.2.2 method
+        # Force CTkEntry to redraw its placeholder
+        for e in entries:
             try:
-                e._draw_placeholder()
+                e.event_generate("<FocusOut>")   # triggers CTk's built-in focus-out logic
             except Exception:
                 pass
+            if hasattr(e, "_draw_placeholder"):  # CTk 5.2.2 method
+                try:
+                    e._draw_placeholder()
+                except Exception:
+                    pass
