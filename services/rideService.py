@@ -51,7 +51,7 @@ class RideService:
         try:
             collection = db_config.get_collection(RideModel.collection_name)
 
-            existing = collection.find_one({
+            existing = RideModel.find_one({
                 "_id": ObjectId(ride_id),
                 "ratings.given_by": rating["given_by"]
             })
@@ -68,9 +68,6 @@ class RideService:
 
     def get_driver_for_ride(self, ride_id):
         ride = RideModel.find_one({"_id": ObjectId(ride_id)})
-        if ride:
-            return str(ride.get("driver_id", ""))
+        if ride and hasattr(ride, "driver_id"):
+            return str(ride.driver_id)
         return ""
-
-    def delete_ride(self, ride_id):
-        pass

@@ -59,15 +59,15 @@ class RideRequestPage(ctk.CTkFrame):
         self.status_label = ctk.CTkLabel(content_frame, text="", font=("Arial", 14))
         self.status_label.grid(row=5, column=0, pady=10)
 
-        # Back button
+        #Back
         back_btn = ctk.CTkButton(
-            content_frame,
+            self,
             text="⬅",
             command=lambda: self.manager.show_screen("rider_dashboard"),
             width=100,
             height=35
         )
-        back_btn.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+        back_btn.grid(row=99, column=0, sticky="w", padx=10, pady=10)
 
 
     def request_ride(self):
@@ -92,3 +92,6 @@ class RideRequestPage(ctk.CTkFrame):
 
         except Exception as e:
             self.status_label.configure(text=f"❌ Error: {str(e)}", text_color="red")
+
+    def reset_screen(self):
+        self.status_label.configure(text="")

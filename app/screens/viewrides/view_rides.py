@@ -48,11 +48,10 @@ class ViewMyRidesPage(ctk.CTkFrame):
     #rating
     def submit_rating(self, ride_id, score, comment):
         user = Config.loggedInUser
-        ride = self.ride_service.get_ride(ride_id)
-        driver_id = ride.get("driver_id", "")
+        driver_id = self.ride_service.get_driver_for_ride(ride_id) or ""
         rating = {
-            "given_by": str(user["_id"]),   
-            "given_to": str("driver_id", ""),
+            "given_by": str(user["_id"]),
+            "given_to": str(driver_id),
             "score": int(score),
             "comment": comment.strip()
         }
@@ -130,12 +129,11 @@ class ViewMyRidesPage(ctk.CTkFrame):
 
             if status.lower() == "completed" and role == "rider":
                 if already_rated:
-                    # show user's rating
                     for r in ratings:
-                        if r.get("given_by") == "rider":
+                        if r.get("given_by") == user_id:
                             ctk.CTkLabel(card, text=f"Your Rating: {r['score']}/5", anchor="w", text_color="blue").pack(anchor="w", padx=10, pady=(5,0))
                             if r.get("comment"):
-                                ctk.CTkLabel(card, text=f"Comment: {r['comment']}", anchor="w").pack(anchor="w", padx=20)
+                                ctk.CTkLabel(card, text=f"Comment: {r['comment']}", anchor="w").pack(anchor="w", padx=10)
                 else:
                     # add rating UI
                     ctk.CTkLabel(card, text="Rate this ride:", font=("Arial", 10, "bold")).pack(anchor="w", padx=10, pady=(5,0))
