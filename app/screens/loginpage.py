@@ -34,8 +34,8 @@ class LoginPage(ctk.CTkFrame):
         switch_frame = ctk.CTkFrame(content_frame, fg_color="transparent")
         switch_frame.grid(row=4, column=0, pady=10)
 
-        self.pwd_mode_btn = ctk.CTkButton(switch_frame, text="🔑 Login with Password", command=self.show_password_mode, width=160, height=35, corner_radius=8)
-        self.pwd_mode_btn.grid(row=0, column=0, padx=5)
+        # self.pwd_mode_btn = ctk.CTkButton(switch_frame, text="🔑 Login with Password", command=self.show_password_mode, width=160, height=35, corner_radius=8)
+        # self.pwd_mode_btn.grid(row=0, column=0, padx=5)
 
         self.otp_mode_btn = ctk.CTkButton(switch_frame, text="📩 Login with OTP", command=self.show_otp_mode, width=160, height=35, corner_radius=8)
         self.otp_mode_btn.grid(row=0, column=1, padx=5)
