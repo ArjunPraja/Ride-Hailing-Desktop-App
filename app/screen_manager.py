@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from app.utils.helpers import get_all_entries
+from utils.helpers import get_all_entries
 
 class ScreenManager(ctk.CTk):
     def __init__(self, root):

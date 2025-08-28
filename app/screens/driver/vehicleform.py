@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import config.config_var as config
 from services.vehicleService import VehicleService
-from app.utils.helpers import get_all_entries
+from utils.helpers import get_all_entries
 
 class VehicleForm(ctk.CTkFrame):
     def __init__(self, parent, manager=None, vehicle_data=None):

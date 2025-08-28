@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from services.userService import UserService
-from app.utils.helpers import get_all_entries
+from utils.helpers import get_all_entries
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, manager=None):

@@ -2,7 +2,7 @@ import customtkinter as ctk
 from services.rideService import RideService
 import config.config_var as config
 import random
-from app.utils.helpers import get_all_entries
+from utils.helpers import get_all_entries
 
 class RideRequestPage(ctk.CTkFrame):
     def __init__(self, parent, manager=None):

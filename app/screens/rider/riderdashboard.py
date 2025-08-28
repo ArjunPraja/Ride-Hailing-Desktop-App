@@ -1,7 +1,7 @@
 from logging import config
 import customtkinter as ctk
 import config.config_var as Config 
-from app.utils.helpers import get_all_entries
+from utils.helpers import get_all_entries
 
 class RiderDashboard(ctk.CTkFrame):
     def __init__(self, parent, manager=None):
