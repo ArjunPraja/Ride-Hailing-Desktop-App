@@ -26,9 +26,9 @@ class UserModel(BaseModel):
             errors.append("Invalid email format.")
 
         # Phone number validation (10 digits)
-        # phone_regex = r'^\d{10}$'
-        # if not re.match(phone_regex, self.phone_no):
-        #     errors.append("Phone number must be 10 digits.")
+        phone_regex = r'^\d{10}$'
+        if not re.match(phone_regex, self.phone_no):
+            errors.append("Phone number must be 10 digits.")
 
         # Role validation (restrict to known roles)
         valid_roles = ["admin", "rider", "driver"]
@@ -36,9 +36,9 @@ class UserModel(BaseModel):
             errors.append(f"Role must be one of ['rider', 'driver'].")
 
         # Password validation (min 8 chars, at least 1 number + 1 special char)
-        # pwd_regex = r'^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$'
-        # if not re.match(pwd_regex, self.password):
-        #     errors.append("Password must be at least 8 characters long, include a number and a special character.")
+        pwd_regex = r'^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$'
+        if not re.match(pwd_regex, self.password):
+            errors.append("Password must be at least 8 characters long, include a number and a special character.")
 
         if errors:
             raise ValueError({"validation_errors": errors})
